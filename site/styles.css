@@ -1,5 +1,5 @@
 body {
-    background-color: #D1D1D1;
+    background-color: #E3E3E3;
     font-family: "Arial";
 }
 
@@ -9,9 +9,9 @@ body {
     max-width: 800px;
 }
 
-.p {
-    margin-top: 5px;
-    margin-bottom: 5px;
+h2 {
+    font-weight: normal;
+    border-bottom: 1px solid grey;
 }
 
 .title {

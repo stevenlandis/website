@@ -1,6 +1,8 @@
 import os
 import subprocess as sp
 
+ignoreDirs = {'node_modules', '__pycache__'}
+
 def main():
     Builder(os.getcwd())
 
@@ -11,6 +13,7 @@ class Builder:
         self.setFiles()
     def setFiles(self):
         for root, dirs, files in os.walk(self.root):
+            dirs[:] = [d for d in dirs if d not in ignoreDirs]
             relPath = root[len(self.root):]
             for f in files:
                 F = File(root,relPath,f)
