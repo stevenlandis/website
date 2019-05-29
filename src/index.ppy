@@ -1,15 +1,2 @@
-from defs import *
-import sys
-sys.path.append('testDir')
-
-p = Page('Test Page')
-p.head.push('<link rel="icon" type="image/png" href="favicon/16x16.png" sizes="16x16">')
-p.head.push('<link rel="icon" type="image/png" href="favicon/32x32.png" sizes="32x32">')
-p.head.push('<link rel="icon" type="image/png" href="favicon/96x96.png" sizes="96x96">')
-p.head.push('<link rel="stylesheet" href="styles.css">')
-p.head.push('<link rel="stylesheet" href="highlight/styles/xcode.css">')
-p.head.push('<script src="highlight/highlight.pack.js"></script>')
-p.head.push('<script>hljs.initHighlightingOnLoad();</script>')
-
-p.body.push(Elem('p','stuff and things'))
-
+p = MainPage('Steven Landis', getBasePath())
+p.body.push(markdown('index.md'))

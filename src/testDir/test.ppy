@@ -1,4 +1,2 @@
-with open('test.txt','r') as f:
-    print(f.read())
-
-p = 'testpage'
+p = MainPage('Test Page', getBasePath())
+p.body.push(markdown('test.md'))

@@ -1,26 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Test Website</title>
-    <link rel="icon" type="image/png" href="favicon/16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="favicon/32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="favicon/96x96.png" sizes="96x96">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="highlight/styles/xcode.css">
-    <script src="highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-</head>
-<body>
-    <div class="main">
-        <a href="index.html" class="title"><div>Steven Landis</div></a>
-        <div class="navbar">
-            <span><a href="projects.html">Projects</a></span>
-            <span><a href="index.html">Resume</a></span>
-        </div>
-        <h2>Why does text rendering suck?</h2>
-        <p>Why is it so hard to render text? The answer is that it is a pain in the ass to measure text. It is very rare that a graphics API exposes tools to measure individual characters. And it isn't even that hard. The tool can give character dimmensions as a bounding box and developers can use that to position and center text.</p>
+<!DOCTYPE html><html><head><title>Steven Landis</title><meta charset="UTF-8"><link rel="icon" type="image/png" href="favicon/16x16.png" sizes="16x16"><link rel="icon" type="image/png" href="favicon/32x32.png" sizes="32x32"><link rel="icon" type="image/png" href="favicon/96x96.png" sizes="96x96"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="highlight/styles/xcode.css"><script src="highlight/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body><div class="title">Steven Landis</div><div class="navbar"><span><a href="test.html">Stuff</a></span><span><a href="test.html">And</a></span><span><a href="test.html">Things</a></span></div><div class="main"><h1>CS56 Lab Simplification</h1>
+<p>I found the <a href="https://ucsb-cs56.github.io/s19/lab/lab05/">normal lab</a> to be too confusing to easily read so I made this guide to help me understand the lab.</p>
+<h2>Pair Programming</h2>
+<p>Read the website, it's the same as always.</p>
+<h2>Introduction</h2>
+<p>Message board applications let users post messages and reply to messages. This lab will not have a user interface, just a library.</p>
+<h2>Tags</h2>
+<p>Posts have tags that summarize their content. A post about food might have a <code>food</code> tag. Users can subscribe to tags and recieve updates whenever a post with a tag is posted.</p>
+<p>Tags are always given as alphanumeric and case insensitive. I think tags should be their own class but they are stored as strings in this lab so make sure to call <code>.toLowerCase()</code>. </p>
+<h2>Subject-Observer Pattern</h2>
+<p>Before getting into how the classes are defined, I'll describe some interfaces that enable this pattern.</p>
+<pre><code class="java">interface Observer {
+    public void update(Post post);
+}
+</code></pre>
 
-        <p>Libraries nowadays don't give developers enough control. They assume the developers doesn't know how to write code. Sometimes this makes it easy to quickly create things, but often the creativity of the developer is limited by the tools at their disposal. Like graphics APIs not exposing character measurements. It seems like a basic requirement for positioning text and yet toolboxes fail to expose that behavior.</p>
-    </div>
-</body>
-</html>
+<pre><code class="java">interface Subject {
+    public void registerUserTag(String tag, User user);
+    public void removeUserTag(String tag, User user);
+    public void notifyUsers(Post p);
+}
+</code></pre>
+
+<p><code>User</code> objects implement <code>Observer</code> because they observe and <code>MessageBoardManager</code> objects implement <code>Subject</code> because they are observed.</p>
+<h2>Posts</h2>
+<p>Posts have the following properties:</p>
+<pre><code>tags: ArrayList&lt;String&gt;
+message: String
+replies: ArrayList&lt;Post&gt;
+id: Integer
+ - a unique Post ID assigned on post creation.
+ - I used a static variable to keep track of this ID.
+parentID:
+ - non-reply posts have parentID = -1
+user: User
+ - User who made the post
+
+</code></pre>
+
+<p>Child posts inherit tags from their parents.</p>
+<p>And the following methods:</p>
+<pre><code class="java">public ArrayList&lt;String&gt; getTags() {return tags;}
+public int getPostID() {return id;}
+public String toString(); // useful for printing
+</code></pre>
+
+<h2>Users</h2>
+<p><code>implements Observer</code></p>
+<p>Users have the following properties:</p>
+<pre><code>id: Integer
+ - Similar to postID, unique integer for every user
+tags: ArrayList&lt;String&gt;
+posts: ArrayList&lt;Post&gt;
+</code></pre>
+
+<p>And the following method:</p>
+<pre><code class="java">// displays a stub-like message saying the user was notified
+// inherited from Observer
+public void update(Post p)
+</code></pre>
+
+<h2>MessageBoardManager</h2>
+<p><code>implements Subject</code></p>
+<p>MessageBoardManagers have the following methods. It's up to the programmer to implement necessary properties.</p>
+<pre><code class="java">public void addPost(Post p)
+public void addReply(Post reply)
+public void displayTagMessages(String tag)
+public void displayKeywordMessages(String keyword)
+public void displayThread(int postID)
+public void displayUserPosts(User user)
+public void registerUserTag(String tag, User user)
+public void removeUserTag(String tag, User user)
+public void notifyUsers(Post p)
+</code></pre></div></body></html>
