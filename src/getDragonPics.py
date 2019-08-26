@@ -19,6 +19,6 @@ class ConvertRule(bld.Rule):
         [outFile] = self.outputs
 
         cmd = f'magick convert "{inFile.path}" "{outFile.path}"'
-        print(cmd)
+        # print(cmd)
         os.system(cmd)
         # sub.run([cmd], shell=True)
