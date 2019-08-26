@@ -30,6 +30,9 @@ def getResDir():
     # copy resoruce files
     bld.copyDir(bld.DiskDir('rec'), buildDir.getDir('rec'))
 
+    # CNAME
+    bld.CopyRule(bld.DiskFile('rec/CNAME'), buildDir.getFile('CNAME'))
+
     # copy scripts
     bld.copyDir(bld.DiskDir('src/scripts'), buildDir.getDir('scripts'))
 
