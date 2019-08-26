@@ -1,2 +1,0 @@
-p = MainPage('Test Page', getBasePath())
-p.body.push(markdown('test.md'))

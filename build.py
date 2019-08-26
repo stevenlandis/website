@@ -1,82 +1,115 @@
+import bld
 import os
-import sys
-import subprocess as sp
-import importlib.util as imp
-from defs import *
-import shutil
+from src.parts.MarkdownPage import MarkdownPage
+from src.parts.getLinks import getLinks
+from src.getDragonPics import getDragonPics
 
-ignoreDirs = {'node_modules', '__pycache__'}
+def getResDir():
+    resources = set()
+    pageDir = bld.DiskDir('src/pages')
+    resDir = bld.VirDir('website')
+
+    buildDir = resDir.getDir('build')
+    for inFile in pageDir.files:
+        if inFile.name.startswith('__'):
+            continue
+        elif inFile.type == 'py':
+            path = f'src/pages/{inFile.name}'
+            outFile = buildDir.getFile(f'{inFile.title}.html')
+            HTMLRule(inFile, outFile, '.')
+        elif inFile.type == 'md':
+            path = f'src/pages/{inFile.name}'
+            outFile = buildDir.getFile(f'{inFile.title}.html')
+            MarkdownRule(inFile, outFile, '.')
+
+    # linkDir = resDir.getDir('links')
+    # getLinksDir(bld.DiskDir('src'), resDir.getDir('links'))
+
+    getDragonPics(resDir.getDir('build/rec'))
+
+    # copy resoruce files
+    bld.copyDir(bld.DiskDir('rec'), buildDir.getDir('rec'))
+
+    # copy scripts
+    bld.copyDir(bld.DiskDir('src/scripts'), buildDir.getDir('scripts'))
+
+    return resDir
+
+def getLinksDir(inDir, outDir):
+    for file in inDir.files:
+        if file.type != 'py': continue
+        LinkRule(file, outDir.getFile(f'{file.title}.link'))
+    for d in inDir.dirs:
+        getLinksDir(d, outDir.getDir(d.name))
 
 def main():
-    Builder(os.getcwd())
+    resDir = getResDir()
+    resDir.build('..')
 
-class Builder:
-    def __init__(self,root):
-        self.root = root
-        # self.buildDir = os.path.abspath(os.path.join(root,os.pardir,'site'))
-        self.buildDir = os.path.join(root,'site')
-        self.srcDir = os.path.join(root,'src')
-        self.recDir = os.path.join(root,'rec')
-        self.copyResources()
-        self.buildFiles()
-    def buildFiles(self):
-        global resourceDepth
-        for root, dirs, files in os.walk(self.srcDir):
-            dirs[:] = [d for d in dirs if d not in ignoreDirs]
-            relPath = root[len(self.srcDir)+1:]
-            resourceDepth = getDirDepth(relPath)
-            for f in files:
-                F = File(root,relPath,f)
-                if F.type != 'ppy': continue
-                fPath = os.path.join(self.buildDir,relPath,f'{F.name}.html')
-                F.gen(fPath)
-    def copyResources(self):
-        try: shutil.rmtree(self.buildDir)
-        except: pass
-        shutil.copytree(self.recDir, self.buildDir)
+def force():
+    resDir = getResDir()
+    resDir.rebuild('..')
 
-def cleanStr(txt):
-    txt = txt.replace('\r\n','\n')
-    if txt[0] == '\n':
-        i = 1
-        while txt[i] == ' ' or txt[i] == '\t': i+=1
-        txt = txt.replace(txt[1:i],'')
-    return txt
+def clean():
+    os.popen('rm -rf build')
+    os.popen('rm -rf links')
 
-def getDirDepth(relPath):
-    res = 0
-    while relPath != '':
-        relPath, _ = os.path.split(relPath)
-        res+=1
-    return res
+def test():
+    testDir = bld.DiskDir('src')
+    for file in testDir.allFiles:
+        print(file.path)
 
-class File:
-    def __init__(self,root,relPath,name):
-        self.root = root
-        self.relPath = relPath
-        self.name = name
-        self.path = os.path.join(root,name)
-        dotI = name.find('.')
-        if dotI == -1: self.type = ''
-        else:
-            self.type = name[dotI+1:]
-            self.name = name[:dotI]
-    def gen(self, fPath):
-        print(f'building {os.path.join(self.relPath,self.name)}.html')
-        dirPath = os.path.dirname(self.path)
-        cwd = os.getcwd()
-        os.chdir(dirPath)
-        with open(self.path,'r') as f:
-            ldict = {}
-            exec(f.read(),globals(),ldict)
-            p = ldict['p']
-        os.chdir(cwd)
-        os.makedirs(os.path.dirname(fPath), exist_ok=True)
-        with open(fPath,'w') as f: f.write(str(p))
+class HTMLRule(bld.Rule):
+    def __init__(self, inFile, outFile, basePath):
+        self.init()
+        self.addIn(inFile)
+        self.addOut(outFile)
+        self.basePath = basePath
+    def run(self):
+        print(f'making {self.outputs[0].name}')
+        txt = self.inputs[0].read()
 
-resourceDepth = None
-def resource(name):
-    return '../'*resourceDepth + name
-def getBasePath(): return '../'*resourceDepth
+        tempGlobals = {}
+        exec(txt, tempGlobals)
 
-main()
+        if 'build' not in tempGlobals:
+            raise Exception(f'{self.inputs[0].name} needs a function build()')
+
+        resTxt = tempGlobals['build'](self)
+
+        self.outputs[0].write(resTxt)
+
+    def getRec(self, path):
+        return f'{self.basePath}/rec/{path}'
+    def getScript(self, path):
+        return f'{self.basePath}/scripts/{path}'
+
+class MarkdownRule(bld.Rule):
+    def __init__(self, inFile, outFile, basePath):
+        self.init()
+        self.addIn(inFile)
+        self.addOut(outFile)
+        self.basePath = basePath
+    def run(self):
+        print(f'making {self.outputs[0].name}')
+        txt = self.inputs[0].read()
+
+        self.outputs[0].write(MarkdownPage(txt, self))
+
+    def getRec(self, path):
+        return f'{self.basePath}/rec/{path}'
+    def getScript(self, path):
+        return f'{self.basePath}/scripts/{path}'
+
+class LinkRule(bld.Rule):
+    def __init__(self, inFile, outFile):
+        self.init()
+        self.addIn(inFile)
+        self.addOut(outFile)
+    def run(self):
+        print(f'linking {self.outputs[0].name}')
+
+        links = getLinks(self.inputs[0])
+        
+        self.outputs[0].write('\n'.join(links))
+

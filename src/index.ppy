@@ -1,2 +1,0 @@
-p = MainPage('Steven Landis', getBasePath())
-p.body.push(markdown('index.md'))

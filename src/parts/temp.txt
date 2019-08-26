@@ -1,0 +1,6 @@
+copyMe = bld.DiskFile(<span class="hljs-string">'copyMe.txt'</span>)
+copiedMe = bld.VirFile(<span class="hljs-string">'copiedMe.txt'</span>)
+CopyRule(copyMe, copiedMe)
+
+<span class="hljs-comment"># run the rule</span>
+copiedMe.build(<span class="hljs-string">'.'</span>)

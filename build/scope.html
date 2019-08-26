@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><title>Scope Based Programming</title><meta charset="UTF-8"><link rel="icon" type="image" href="./rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="./rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="./rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="./rec/styles.css"/><link rel="stylesheet" href="./rec/highlight/styles/xcode.css"/></head><body><div class="main"><div class="title">Scope Based Programming</div><div class="navbar"><span><a href="index.html">Home</a></span><span><a style="margin-left:3em;" href="bld.html">bld.py</a></span><span><a style="margin-left:3em;" href="dragonCurve.html">Dragon Curve</a></span><span><a style="margin-left:3em;" href="siteElements.html">Site Elements</a></span><span><a style="margin-left:3em;" href="software.html">Software</a></span><span><a style="margin-left:3em;" href="scope.html">Scope</a></span></div><h2>The Problem</h2>
+<p>I was recently writing some software with a lot of densely connected data structure.</p>
+<div class="code"><pre><code>public render() {
+  <span class="hljs-keyword">const</span> {
+    points,
+    width,
+    height,
+    xUnit,
+    yUnit,
+    colors = DEFAULT_COLORS
+  } = <span class="hljs-keyword">this</span>.props
+
+  <span class="hljs-keyword">const</span> xVals = points.map(d => d.x)
+  <span class="hljs-keyword">const</span> xScale = getScale(xVals, xUnit)
+
+  <span class="hljs-keyword">const</span> yVals = points.map(d => d.y)
+  <span class="hljs-keyword">const</span> yScale = getScale(yVals, yUnit)
+
+  <span class="hljs-keyword">const</span> scaledPoints = points.map(p => {
+    <span class="hljs-keyword">return</span> {
+      <span class="hljs-attr">x</span>: xScale(p.x)
+      y: yScale(p.y)
+    }
+  })
+}
+</code></pre></div>
+
+<h2>The Intuition</h2>
+<h2>The Language</h2></div></body></html>

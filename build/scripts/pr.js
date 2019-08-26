@@ -1,0 +1,1 @@
+const pr = console.log;
