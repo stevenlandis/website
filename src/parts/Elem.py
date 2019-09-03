@@ -26,3 +26,7 @@ def SingleElem(tag, attrs=None):
 
     attrStr = getAttrStr(attrs)
     return f'<{tag}{attrStr}/>'
+
+def Meta(attrs):
+    attrStr = getAttrStr(attrs)
+    return f'<{attrStr}>'

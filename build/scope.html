@@ -1,29 +1,33 @@
-<!DOCTYPE html><html><head><title>Scope Based Programming</title><meta charset="UTF-8"><link rel="icon" type="image" href="./rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="./rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="./rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="./rec/styles.css"/><link rel="stylesheet" href="./rec/highlight/styles/xcode.css"/></head><body><div class="main"><div class="title">Scope Based Programming</div><div class="navbar"><span><a href="index.html">Home</a></span><span><a style="margin-left:3em;" href="bld.html">bld.py</a></span><span><a style="margin-left:3em;" href="dragonCurve.html">Dragon Curve</a></span><span><a style="margin-left:3em;" href="siteElements.html">Site Elements</a></span><span><a style="margin-left:3em;" href="software.html">Software</a></span><span><a style="margin-left:3em;" href="scope.html">Scope</a></span></div><h2>The Problem</h2>
+<!DOCTYPE html><html lang="en"><head><title>Scope Based Programming</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="rec/styles.css"/><link rel="stylesheet" href="rec/highlight.css"/></head><body><div class="main"><div class="title">Scope Based Programming</div><div class="navbar"><span><a href="index.html">Home</a></span><span><a style="margin-left:3em;" href="bld.html">bld.py</a></span><span><a style="margin-left:3em;" href="dragonCurve.html">Dragon Curve</a></span><span><a style="margin-left:3em;" href="siteElements.html">Site Elements</a></span><span><a style="margin-left:3em;" href="software.html">Software</a></span><span><a style="margin-left:3em;" href="scope.html">Scope</a></span></div><h2>The Problem</h2>
+
 <p>I was recently writing some software with a lot of densely connected data structure.</p>
-<div class="code"><pre><code>public render() {
-  <span class="hljs-keyword">const</span> {
-    points,
-    width,
-    height,
-    xUnit,
-    yUnit,
-    colors = DEFAULT_COLORS
-  } = <span class="hljs-keyword">this</span>.props
 
-  <span class="hljs-keyword">const</span> xVals = points.map(d => d.x)
-  <span class="hljs-keyword">const</span> xScale = getScale(xVals, xUnit)
+<div class="code"><pre><span></span><code><span class="kr">public</span> <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">{</span>
+    <span class="nx">points</span><span class="p">,</span>
+    <span class="nx">width</span><span class="p">,</span>
+    <span class="nx">height</span><span class="p">,</span>
+    <span class="nx">xUnit</span><span class="p">,</span>
+    <span class="nx">yUnit</span><span class="p">,</span>
+    <span class="nx">colors</span> <span class="o">=</span> <span class="nx">DEFAULT_COLORS</span>
+  <span class="p">}</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span>
 
-  <span class="hljs-keyword">const</span> yVals = points.map(d => d.y)
-  <span class="hljs-keyword">const</span> yScale = getScale(yVals, yUnit)
+  <span class="kr">const</span> <span class="nx">xVals</span> <span class="o">=</span> <span class="nx">points</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">d</span> <span class="p">=&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
+  <span class="kr">const</span> <span class="nx">xScale</span> <span class="o">=</span> <span class="nx">getScale</span><span class="p">(</span><span class="nx">xVals</span><span class="p">,</span> <span class="nx">xUnit</span><span class="p">)</span>
 
-  <span class="hljs-keyword">const</span> scaledPoints = points.map(p => {
-    <span class="hljs-keyword">return</span> {
-      <span class="hljs-attr">x</span>: xScale(p.x)
-      y: yScale(p.y)
-    }
-  })
-}
+  <span class="kr">const</span> <span class="nx">yVals</span> <span class="o">=</span> <span class="nx">points</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">d</span> <span class="p">=&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+  <span class="kr">const</span> <span class="nx">yScale</span> <span class="o">=</span> <span class="nx">getScale</span><span class="p">(</span><span class="nx">yVals</span><span class="p">,</span> <span class="nx">yUnit</span><span class="p">)</span>
+
+  <span class="kr">const</span> <span class="nx">scaledPoints</span> <span class="o">=</span> <span class="nx">points</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">p</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="nx">x</span><span class="o">:</span> <span class="nx">xScale</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span>
+      <span class="nx">y</span><span class="o">:</span> <span class="nx">yScale</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h2>The Intuition</h2>
-<h2>The Language</h2></div></body></html>
+
+<h2>The Language</h2>
+</div></body></html>

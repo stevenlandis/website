@@ -1,8 +1,12 @@
-import markdown as md
+import markdown2 as md
 import re
 from src.parts.Highlight import Highlight
 
-convert = md.Markdown(extensions=['fenced_code']).convert
+extras = {
+    'fenced-code-blocks': {'cssclass': 'code'}
+}
+
+convert = md.Markdown(extras=extras).convert
 
 codeRegex = re.compile(r'<pre><code(?: class="(.*)")?>([\s\S]*?)<\/code><\/pre>')
 
@@ -16,5 +20,6 @@ def Markdown(txt=None, path=None):
         with open(path, 'r') as f:
             txt = f.read()
     mdTxt = convert(txt)
-    mdTxt = codeRegex.sub(highlightMatch, mdTxt)
+    # print(mdTxt)
+    # mdTxt = codeRegex.sub(highlightMatch, mdTxt)
     return mdTxt

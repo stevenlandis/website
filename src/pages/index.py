@@ -6,7 +6,7 @@ from src.parts.MarkdownPage import MarkdownPage
 
 def build(builder):
     content = [
-        Markdown(path='src/pages/__index.md')
+        Markdown(path='src/pages/_index.md')
     ]
 
     return MainPage('Home', builder, content)

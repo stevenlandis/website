@@ -7,7 +7,7 @@ def NavBarLink(name, href, first=False):
     attrs['href'] = href
     return Elem('span', Elem('a', name, attrs=attrs))
 
-def Navbar(links=None):
+def Navbar(pathGetter, links=None):
     if links == None:
         links = [
             ('Home', 'index.html'),
@@ -17,10 +17,11 @@ def Navbar(links=None):
             ('Software', 'software.html'),
             ('Scope', 'scope.html')
         ]
-        return Navbar(links)
+        return Navbar(pathGetter, links)
 
     linkElems = []
-    for i, (name, href) in enumerate(links):
-        linkElems.append(NavBarLink(name, href, i == 0))
+    for i, (label, name) in enumerate(links):
+        href = pathGetter.getPage(name)
+        linkElems.append(NavBarLink(label, href, i == 0))
 
     return Elem('div', linkElems, attrs={'class': 'navbar'})

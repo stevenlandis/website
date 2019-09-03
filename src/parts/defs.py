@@ -1,4 +1,4 @@
-from src.parts.Elem import Elem, SingleElem
+from src.parts.Elem import Elem, SingleElem, Meta
 from src.parts.Navbar import Navbar
 
 def file(fName):
@@ -13,7 +13,7 @@ def code(fName, syntax):
 def Page(title, head, body):
     head = Elem('head', [Elem('title', title), head])
     body = Elem('body', body)
-    elem = Elem('html', [head, body])
+    elem = Elem('html', [head, body], attrs={'lang': 'en'})
     return '<!DOCTYPE html>' + elem
 
 def Favicon(size, builder):
@@ -45,16 +45,17 @@ def Title(title):
 def MainPage(title, builder, content):
     head = [
         '<meta charset="UTF-8">',
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
         Favicon('16x16', builder),
         Favicon('32x32', builder),
         Favicon('96x96', builder),
         StyleSheet('styles.css', builder),
-        StyleSheet('highlight/styles/xcode.css', builder)
+        StyleSheet('highlight.css', builder)
     ]
 
     body = Elem('div', [
         Title(title),
-        Navbar(),
+        Navbar(builder),
         content
     ], attrs={'class': 'main'})
 

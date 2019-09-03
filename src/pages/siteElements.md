@@ -13,12 +13,12 @@ Paragraph. This is some text.
 
 This is some `inline` code.
 
-Link [to this](siteElements.html) page.
+Link to [this page](siteElements.html) and some text after.
 
 ```js
 // this is some javascript
 for (var i = 0; i < 10; i++) {
-    console.log(`${i}`)
+    console.log(`number ${i}`)
 }
 ```
 

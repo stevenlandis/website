@@ -7,6 +7,8 @@ body {
 .main {
     margin-left: auto;
     margin-right: auto;
+    padding-left: 1em;
+    padding-right: 1em;
     max-width: 42em;
     margin-bottom: 5em;
 }
@@ -28,7 +30,7 @@ h3 {
     font-weight: normal;
 }
 
-ul {
+ol, ul {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
@@ -36,12 +38,19 @@ ul {
 p {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
-    font-size: 1rem;
 }
 
 div.code, code  {
     font-size: 16px;
     background-color: #C2C2C2;
+}
+
+a {
+    color: #3434cb;
+}
+
+p, ol, ul {
+    font-size: 1rem;
 }
 
 .code pre {
