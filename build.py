@@ -2,7 +2,7 @@ import bld
 import os
 from src.parts.MarkdownPage import MarkdownPage
 from src.parts.getLinks import getLinks
-from src.getDragonPics import getDragonPics
+from src.getFractalPics import getFractalPics
 from src.parts.Highlight import getCss
 
 def getResDir():
@@ -15,8 +15,6 @@ def getResDir():
 
     # linkDir = resDir.getDir('links')
     # getLinksDir(bld.DiskDir('src'), resDir.getDir('links'))
-
-    getDragonPics(resDir.getDir('build/rec'))
 
     # copy resoruce files
     bld.copyDir(bld.DiskDir('rec'), buildDir.getDir('rec'))
@@ -60,9 +58,23 @@ def getLinksDir(inDir, outDir):
     for d in inDir.dirs:
         getLinksDir(d, outDir.getDir(d.name))
 
-def main():
+def fractalPics():
+    folder = bld.VirDir('fractalPics')
+    getFractalPics(folder)
+    folder.build('build')
+
+def site():
     resDir = getResDir()
     resDir.build('..')
+
+def main():
+    fractalPics()
+
+    site()
+
+def buildFractalPics():
+    resDir = bld.VirDir('fractalPics')
+
 
 def force():
     resDir = getResDir()

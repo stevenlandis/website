@@ -1,12 +1,11 @@
 import bld
 import os
 
-def getDragonPics(folder):
-    pics = folder.getDir('fractalPics')
+def getFractalPics(folder):
     picsSrc = bld.DiskDir('C:/Users/StevenLandis/Google Drive/core/Programming/cppFractal/pics/color path')
     for f in picsSrc.files:
         if f.type != 'bmp': continue
-        ConvertRule(f, pics.getFile(f'{f.title}.jpg'))
+        ConvertRule(f, folder.getFile(f'{f.title}.jpg'))
 
 
 class ConvertRule(bld.Rule):
@@ -18,7 +17,6 @@ class ConvertRule(bld.Rule):
         [inFile] = self.inputs
         [outFile] = self.outputs
 
+        print(f'converting image {outFile.name}')
         cmd = f'magick convert "{inFile.path}" "{outFile.path}"'
-        # print(cmd)
         os.system(cmd)
-        # sub.run([cmd], shell=True)

@@ -11,11 +11,11 @@ def Navbar(pathGetter, links=None):
     if links == None:
         links = [
             ('Home', 'index.html'),
-            ('bld.py', 'bld.html'),
-            ('Dragon Curve', 'dragonCurve.html'),
+            ('bld.py', 'posts/bld.html'),
+            ('Dragon Curve', 'posts/dragonCurve.html'),
             ('Site Elements', 'siteElements.html'),
-            ('Software', 'software.html'),
-            ('Scope', 'scope.html')
+            ('Software', 'posts/software.html'),
+            ('Scope', 'posts/scope.html')
         ]
         return Navbar(pathGetter, links)
 

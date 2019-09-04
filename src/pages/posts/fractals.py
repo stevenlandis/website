@@ -6,10 +6,10 @@ def build(builder):
     content = [
     ]
 
-    for file in bld.DiskDir('build/rec/fractalPics').files:
+    for file in bld.DiskDir('build/fractalPics').files:
         content.append(Elem('h2', file.title))
         content.append(SingleElem('img', attrs={
-            'src': f'rec/fractalPics/{file.name}'
+            'src': f'../fractalPics/{file.name}'
         }))
 
     return MainPage('Fractals', builder, content)
