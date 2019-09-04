@@ -9,4 +9,4 @@ def build(builder):
         Markdown(path='src/pages/_index.md')
     ]
 
-    return MainPage('Home', builder, content)
+    return MainPage('Steven Landis', builder, content)
