@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><title>Rule Inputs</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">Rule Inputs</div><div class="navbar"><span><a href="../index.html">Home</a></span><span><a style="margin-left:3em;" href="../resume.html">Resume</a></span><span><a style="margin-left:3em;" href="../postsList.html">Posts</a></span></div><p>This post discusses how to find dependencies for <a href="bld.html">bld</a>, a project builder I made.</p>
+
+<p>Rules have inputs (dependencies) and outputs (results). For bld, these inputs and outputs are files, but they could be many other things such as variables. Bld only lets users declare inputs and outputs before running a rule but there is another way.</p>
+
+<p>Let's say you are baking a cake and you want to know which ingredients to use for each step. The recipe can specify ingredients in two different ways:</p>
+
+<ol>
+<li>Listing the ingredients before the recipe and referencing them throughout the recipe.</li>
+<li>Specifying the ingredients throughout the recipe.</li>
+</ol>
+
+<p>It's the difference between</p>
+
+<pre><code>1. Mix ingredients
+  - 1 cup flour
+  - 1 cup water
+
+  Mix the flour and water in a bowl.
+
+2. Bake the dough
+  - Dough mixture
+  - A pan
+  - A hot oven
+
+  Pour the dough mixture into a pan.
+  Bake for 20 minutes.
+</code></pre>
+
+<p>and</p>
+
+<pre><code>1. Mix 1 cup flour and 1 cup water in a bowl.
+2. Pour the dough mixture into a pan and
+   bake for 20 minutes.
+</code></pre>
+
+<p>The first recipe makes it clear what the cook needs to do for each step but makes more work for the recipe writer.</p>
+
+<p>In the second recipe, ingredients are implied by the instructions which is easier for the recipe writer but harder to see required ingredients.</p>
+</div></body></html>
