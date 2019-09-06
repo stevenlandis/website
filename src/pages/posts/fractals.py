@@ -4,6 +4,11 @@ import bld
 
 def build(builder):
     content = [
+        Elem('p', [
+            'Read more about the ',
+            Elem('a', 'dragon curve', attrs = {'href': 'dragonCurve.html'}),
+            ', the fractal that started it all.'
+        ])
     ]
 
     for file in bld.DiskDir('build/fractalPics').files:

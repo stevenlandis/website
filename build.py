@@ -3,7 +3,10 @@ import os
 from src.parts.MarkdownPage import MarkdownPage
 from src.parts.getLinks import getLinks
 from src.getFractalPics import getFractalPics
+from src.PostsRule import PostsRule
 from src.parts.Highlight import getCss
+from src.PathGetter import PathGetter
+from src.PostsRule import PostsRule
 
 def getResDir():
     resources = set()
@@ -28,7 +31,17 @@ def getResDir():
     # code highlighting css
     bld.WriteRule(resDir.getFile('build/rec/highlight.css'), getCss())
 
+    # posts summary page
+    PostsRule(bld.DiskDir('src/pages/posts'), buildDir.getFile('postsList.html'), '')
+
     return resDir
+
+def getPosts():
+    postDir = bld.DiskDir('src/pages/posts')
+    outDir = bld.VirDir('build')
+    outFile = outDir.getFile('posts')
+    PostsRule(postDir, outFile)
+    outDir.build('.')
 
 def getPages(inDir, outDir, basePath):
     for inFile in inDir.files:
@@ -66,6 +79,10 @@ def fractalPics():
 def site():
     resDir = getResDir()
     resDir.build('..')
+
+def watch():
+    resDir = getResDir()
+    resDir.watch('..')
 
 def main():
     fractalPics()
@@ -153,4 +170,3 @@ class LinkRule(bld.Rule):
         links = getLinks(self.inputs[0])
         
         self.outputs[0].write('\n'.join(links))
-

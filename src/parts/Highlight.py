@@ -5,6 +5,7 @@ from pygments.formatters import HtmlFormatter
 
 formatter = HtmlFormatter(cssclass='code', style='xcode')
 def Highlight(language, code):
+    print(language)
     if language == None:
         return Elem('div', Elem('pre', code), attrs={'class': 'code'})
 

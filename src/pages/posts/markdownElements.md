@@ -1,6 +1,8 @@
 ---
-title: Site Elements
+title: Markdown Demo
 ---
+
+This page demos markdown elements.
 
 # H1
 ## H2
@@ -20,6 +22,12 @@ Link to [this page](siteElements.html) and some text after.
 for (var i = 0; i < 10; i++) {
     console.log(`number ${i}`)
 }
+```
+
+And some more code:
+
+```
+code that is realllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllly long
 ```
 
 ## Unordered Lists

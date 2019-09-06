@@ -38,11 +38,14 @@ ol, ul {
 p {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
+    font-weight: 500;
 }
 
-div.code, code  {
+code  {
     font-size: 16px;
     background-color: #C2C2C2;
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
 }
 
 a {
@@ -53,12 +56,27 @@ p, ol, ul {
     font-size: 1rem;
 }
 
-.code pre {
+pre {
+    padding: 0.5em;
     margin: 0;
+    font-size: 16px;
+    background-color: #C2C2C2;
+    overflow: auto;
 }
 
-div.code {
-    padding: 0.5em;
+blockquote {
+    background: #C2C2C2;
+    border-left: 0.5em solid #8B8B8B;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+}
+
+blockquote p {
+    margin: 0;
+    font-style: italic;
 }
 
 .title {
@@ -86,7 +104,10 @@ div.code {
     background-color: #999999;
     padding: 5px;
     text-align: center;
+}
 
+.postLink {
+    margin-top: 0.5em;
 }
 
 img {
