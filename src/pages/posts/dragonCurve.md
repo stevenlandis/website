@@ -139,3 +139,9 @@ As I was now making my own images, I decided to experiment with color. I made li
 ## Results
 
 You can see a [list of fractal pictures](fractals.html) here. I kept the colors simple with a black background and line colors that cycle through primary colors. This color cycling lets you see how the path is drawn.
+
+# Future Work
+
+At this point I have most of the algorithms in place to make fractals well, but the algorithm isn't accessible (even to me). The easiest solution it to make a web page for previewing and saving fractals. A UI will also make it easier to test out new fractals instead of changing code, re-running the .exe and opening the output picture.
+
+Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better. This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!

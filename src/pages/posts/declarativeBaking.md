@@ -8,7 +8,7 @@ I recently had a summer internship where I had to use a lot of React. It was eye
 
 Over those weeks I also learned that there are improvements to React in terms of abstracting its logic and making it easier to make all aspects of an application declarative instead of just the rendering logic.
 
-As I was busy staring at walls deep in thought, my mom asked me what I was thinking about. After a few minutes of mentally stumbling around how to explain my crazy thoughts, I inevitably went back to cooking as a metaphor for programming. Cooking is an activity that everyone relates to and it's very similar to programming which makes it great for metaphors.
+I'm exploring how dependency analysis can be used to make apps in an easy way and I want to simplify my ideas. I've found the best way to do that is to explain my ideas to someone without a CS background. I've also found that cooking metaphors are surprisingly similar to CS.
 
 Let's say you want to bake a cake and it has the following recipe. In this example the amounts of each ingredient don't really matter, it's more about how the ingredients are combined.
 

@@ -1,5 +1,5 @@
-## Welcome to my site!
+# Welcome!
 
-I build this site from scratch. That means I wrote a python script to generate this static site which involved writing a project-building library called [bld.py](posts/bld.html).
+I'm going into my senior year as a Computer Engineer at UCSB and I code as a hobby. I built this site from scratch which means I wrote a python library I'm calling [bld](posts/bld.html) to generate this static website.
 
-I really like programming and specifically writing libraries. I enjoy making software tools that are easy for people to use. Read more about my [philosophy towards writing software](posts/software.html).
+Rather than use other people's libraries, I prefer writing my own libraries and often re-invent the wheel. Here's a link to learn more about my [approach to writing software](posts/software.html).
