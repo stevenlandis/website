@@ -1,43 +1,45 @@
-const waitMap = new Map();
+class Wait {
+  static map = new Map();
 
-function wait(valObjs, fcn) {
-  if (!(valObjs instanceof Array)) {
-    valObjs = [valObjs];
-  }
+  static wait(valObjs, fcn) {
+    if (!(valObjs instanceof Array)) {
+      valObjs = [valObjs];
+    }
 
-  const fcnObj = { count: 0, fcn };
+    const fcnObj = { count: 0, fcn };
 
-  for (const valObj of valObjs) {
-    if (valObj.value === undefined) {
-      fcnObj.count++;
-      if (waitMap.has(valObj)) {
-        waitMap.get(valObj).push(fcnObj);
-      } else {
-        waitMap.set(valObj, [fcnObj]);
+    for (const valObj of valObjs) {
+      if (valObj.value === undefined) {
+        fcnObj.count++;
+        if (Wait.map.has(valObj)) {
+          Wait.map.get(valObj).push(fcnObj);
+        } else {
+          Wait.map.set(valObj, [fcnObj]);
+        }
       }
+    }
+
+    // run immediately if no dependencies
+    if (fcnObj.count === 0) {
+      fcn();
     }
   }
 
-  // run immediately if no dependencies
-  if (fcnObj.count === 0) {
-    fcn();
-  }
-}
+  static update(valueObj, val) {
+    if (!Wait.map.has(valueObj)) {
+      return;
+    }
 
-function updateWait(valueObj, val) {
-  if (!waitMap.has(valueObj)) {
-    return;
-  }
+    valueObj.value = val;
 
-  valueObj.value = val;
+    const fcnObjList = Wait.map.get(valueObj);
+    Wait.map.delete(valueObj);
 
-  const fcnObjList = waitMap.get(valueObj);
-  waitMap.delete(valueObj);
-
-  for (const fcnObj of fcnObjList) {
-    fcnObj.count--;
-    if (fcnObj.count === 0) {
-      fcnObj.fcn();
+    for (const fcnObj of fcnObjList) {
+      fcnObj.count--;
+      if (fcnObj.count === 0) {
+        fcnObj.fcn();
+      }
     }
   }
 }

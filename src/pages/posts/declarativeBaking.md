@@ -40,3 +40,5 @@ Here are some cool observations:
 - The recipe writer didn't have to describe how to efficiently re-make a cake. You figured that out on your own.
 
 This is the magic of declarative programming. You, the programmer, write a 'recipe' that is rendered as an application. The application framework's job is to figure out efficient ways to change the application *as though it completely re-ran with changed 'ingredients'*.
+
+The tricky part is to figure out the structure of recipes and how to efficiently re-render changes. It will probably be harder than I think!

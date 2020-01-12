@@ -62,7 +62,7 @@ def build(pathGetter):
 
     content = [
         MainTitle('STEVEN LANDIS'),
-        Subtitle('stevenlandis@comcast.net | 408.802.8757'),
+        Subtitle('[FIRST][LAST] at comcast dot net'),
         Subtitle('Santa Barbara, CA'),
         HR(),
         Section(

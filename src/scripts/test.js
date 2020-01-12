@@ -1,4 +1,6 @@
 window.addEventListener('load', () => {
+  pr('Running Tests');
+
   const assert = console.assert;
 
   // ---------
@@ -185,34 +187,34 @@ window.addEventListener('load', () => {
     const valObj = {};
     let called = 0;
 
-    wait(valObj, () => {
+    Wait.wait(valObj, () => {
       called++;
       assert(valObj.value === 2);
     });
     assert(called === 0);
 
-    updateWait(valObj, 2);
+    Wait.update(valObj, 2);
     assert(called === 1);
     assert(valObj.value === 2);
-    assert(waitMap.size === 0);
+    assert(Wait.map.size === 0);
   }
   {
     const valObj1 = {};
     const valObj2 = {};
     let called = 0;
 
-    wait([valObj1, valObj2], () => {
+    Wait.wait([valObj1, valObj2], () => {
       called++;
       assert(valObj1.value === 1);
       assert(valObj2.value === 2);
     });
 
     assert(called === 0);
-    updateWait(valObj1, 1);
+    Wait.update(valObj1, 1);
     assert(called === 0);
-    updateWait(valObj2, 2);
+    Wait.update(valObj2, 2);
     assert(called === 1);
-    assert(waitMap.size === 0);
+    assert(Wait.map.size === 0);
   }
   {
     const v1 = {};
@@ -221,13 +223,13 @@ window.addEventListener('load', () => {
     let called1 = 0;
     let called2 = 0;
 
-    wait([v1, v2], () => {
+    Wait.wait([v1, v2], () => {
       called1++;
       assert(v1.value === 1);
       assert(v2.value === 2);
     });
 
-    wait([v2, v3], () => {
+    Wait.wait([v2, v3], () => {
       called2++;
       assert(v2.value === 2);
       assert(v3.value === 3);
@@ -235,16 +237,16 @@ window.addEventListener('load', () => {
 
     assert(called1 === 0);
     assert(called2 === 0);
-    updateWait(v2, 2);
+    Wait.update(v2, 2);
     assert(called1 === 0);
     assert(called2 === 0);
-    updateWait(v3, 3);
+    Wait.update(v3, 3);
     assert(called1 === 0);
     assert(called2 === 1);
-    updateWait(v1, 1);
+    Wait.update(v1, 1);
     assert(called1 === 1);
     assert(called2 === 1);
-    assert(waitMap.size === 0);
+    assert(Wait.map.size === 0);
   }
   {
     const v1 = {};
@@ -252,37 +254,156 @@ window.addEventListener('load', () => {
     const v3 = {};
     let called1 = 0;
 
-    wait([v1, v2], () => {
+    Wait.wait([v1, v2], () => {
       called1++;
       assert(v1.value === 1);
       assert(v2.value === 2);
     });
 
     assert(called1 === 0);
-    updateWait(v1, 1);
+    Wait.update(v1, 1);
     assert(called1 === 0);
-    updateWait(v2, 2);
+    Wait.update(v2, 2);
     assert(called1 === 1);
 
     let called2 = 0;
-    wait([v2, v3], () => {
+    Wait.wait([v2, v3], () => {
       called2++;
       assert(v2.value === 2);
       assert(v3.value === 3);
     });
 
-    updateWait(v3, 3);
+    Wait.update(v3, 3);
     assert(called1 === 1);
     assert(called2 === 1);
-    assert(waitMap.size === 0);
+    assert(Wait.map.size === 0);
 
     let called3 = 0;
-    wait([v1, v2, v3], () => {
+    Wait.wait([v1, v2, v3], () => {
       called3++;
       assert(v1.value === 1);
       assert(v2.value === 2);
       assert(v3.value === 3);
     });
     assert(called3 === 1);
+  }
+
+  // --------
+  //  Depend
+  // --------
+  {
+    let called = 0;
+    function fcn() {
+      called++;
+    }
+    let obj = {};
+
+    Depend.link(obj, fcn);
+    assert(called === 0);
+
+    Depend.update(obj);
+    assert(called === 1);
+
+    Depend.update(obj);
+    assert(called === 2);
+
+    Depend.unlink(fcn);
+    assert(Depend.fcnObjMap.size === 0);
+
+    Depend.update(obj);
+    assert(called === 2);
+
+    assert(Depend.objFcnMap.size === 0);
+  }
+  {
+    function fcn() {}
+    let obj = {};
+
+    Depend.link(obj, fcn);
+
+    Depend.unlink(fcn);
+    assert(Depend.fcnObjMap.size === 0);
+  }
+  {
+    let c1 = 0;
+    let c2 = 0;
+
+    function f1() {
+      c1++;
+    }
+    function f2() {
+      c2++;
+    }
+
+    let o1 = {};
+
+    Depend.link(o1, f1);
+    Depend.link(o1, f2);
+
+    Depend.update(o1);
+    assert(c1 === 1);
+    assert(c2 === 1);
+
+    Depend.unlink(f1);
+    Depend.unlink(f2);
+
+    assert(Depend.objFcnMap.size === 0);
+    assert(Depend.fcnObjMap.size === 0);
+  }
+  {
+    let c1 = 0;
+    let c2 = 0;
+
+    function f1() {
+      c1++;
+    }
+    function f2() {
+      c2++;
+    }
+
+    let o1 = {};
+    let o2 = {};
+
+    Depend.link(o1, f1);
+    Depend.link(o1, f2);
+    Depend.link(o2, f2);
+
+    Depend.update(o1);
+    assert(c1 === 1);
+    assert(c2 === 1);
+
+    Depend.update(o2);
+    assert(c1 === 1);
+    assert(c2 === 2);
+
+    Depend.unlink(f1);
+    Depend.unlink(f2);
+
+    assert(Depend.objFcnMap.size === 0);
+    assert(Depend.fcnObjMap.size === 0);
+  }
+
+  // -----
+  //  run
+  // -----
+  {
+    let c = 0;
+    run(() => {
+      c++;
+    });
+
+    assert(c === 1);
+    assert(Depend.objFcnMap.size === 0);
+    assert(Depend.fcnObjMap.size === 0);
+  }
+  {
+    run(() => {
+      var testRef = scope.create('test', 1);
+
+      run(() => {
+        var test = testRef.get();
+        pr(test);
+      });
+    });
   }
 });

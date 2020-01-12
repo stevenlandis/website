@@ -1,5 +1,6 @@
 import bld
 import os
+import re
 from src.parts.MarkdownPage import MarkdownPage
 from src.parts.getLinks import getLinks
 from src.getFractalPics import getFractalPics
@@ -53,6 +54,9 @@ def getPages(inDir, outDir, basePath):
         elif inFile.type == 'md':
             outFile = outDir.getFile(f'{inFile.title}.html')
             MarkdownRule(inFile, outFile, basePath)
+        elif inFile.type in ['js', 'png', 'jpg']:
+            outFile = outDir.getFile(inFile.name)
+            bld.CopyRule(inFile, outFile)
 
     for inDir in inDir.dirs:
         if inDir.name.startswith('_'):
@@ -105,6 +109,21 @@ def post(name):
     file = bld.DiskFile(path)
     if not file.exists():
         file.write('')
+
+def fixDuplicates(d = bld.DiskDir('.')):
+    r = re.compile(r'.* \(\d+\)[\.\w]*$')
+
+    for file in d.files:
+        if r.match(file.name):
+            print(f'deleting {file.path}')
+            file.delete()
+
+    for folder in d.dirs:
+        if r.match(folder.name):
+            print(f'deleting {folder.path}')
+            folder.delete()
+        else:
+            fixDuplicates(folder)
 
 def test(a):
     print(a)

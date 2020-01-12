@@ -39,6 +39,8 @@ class PostsRule(bld.Rule):
         for file in postDir.files:
             if file.name.startswith('_'):
                 continue
+            if file.type not in ['md', 'py']:
+                continue
             self.addIn(file)
         self.addOut(outFile)
         self.pathGetter = PathGetter(basePath)

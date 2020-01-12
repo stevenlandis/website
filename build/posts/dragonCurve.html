@@ -106,11 +106,13 @@
 
 <h1>Iteration IV: C++</h1>
 
-<p>Junior year of college began and I had a sudden desire to re-write the fractal in C++. I intended for this to be the final language because c++ is the fastest next to C.</p>
+<p>Junior year of college began and I had a sudden desire to re-write the fractal in C++. I intend for this to be the final language because C++ is the fastest next to C.</p>
 
 <p>This version would have no expenses spared: The fastest algorithm. The best positioning logic. The best output format.</p>
 
 <h2>The Fastest Algorithm</h2>
+
+<p>I haven't figured out a better <code>getTurn()</code>, but it turns out centering the fractal in the screen is a harder problem than generating the fractal in the first place.</p>
 
 <p>To make this drawer run blazingly fast with billions of points, I had to streamline the auto-positioning logic and I got it down to <code>O(n log(n))</code> with the following steps:</p>
 
@@ -127,15 +129,15 @@
 
 <h2>The Best Output Format</h2>
 
-<p>I finally went with outputting to an image instead of opening a window and drawing to the screen as I did with my Python and Java attempts. This meant I could automate fractal-creation and save images without screen shots which introduce human error.</p>
+<p>I finally went with outputting to an image instead of opening a window and drawing to the screen as I did with my Python and Java attempts. This meant I could automate fractal-creation and save images without screen shots which reduces human error.</p>
 
 <p>I decided to write to .bmp files because it was the first algorithm I found to easily write images from C++. I then used <a href="https://imagemagick.org/index.php">ImageMagik</a> to convert to .jpg which I used on this site for reduced file size.</p>
 
-<p>Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I <a href="software.html"><em>strongly dislike</em> using libraries</a> so I found a line drawing algorithm online. In the future I might figure out how to draw from .svg or add different line weights.</p>
+<p>Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I <a href="software.html"><em>strongly dislike</em> using libraries</a> so I found copied a line drawing algorithm online. In the future, I might figure out how to draw from .svg or add different line thicknesses.</p>
 
 <h2>Colors</h2>
 
-<p>As I was now making my own images, I decided to experiment with color. I made lines that smoothly cycled through primary colors and messed around with eroding fractals to create groovy topographical shapes.</p>
+<p>As I was now making my own images, I decided to experiment with color by cycling through colors while drawing the fractal and adding some groovy erosion patterns that look like topographical maps.</p>
 
 <h2>Results</h2>
 
@@ -145,5 +147,5 @@
 
 <p>At this point I have most of the algorithms in place to make fractals well, but the algorithm isn't accessible (even to me). The easiest solution it to make a web page for previewing and saving fractals. A UI will also make it easier to test out new fractals instead of changing code, re-running the .exe and opening the output picture.</p>
 
-<p>Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better. This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!</p>
+<p>Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better (I know how crazy that sounds). This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!</p>
 </div></body></html>

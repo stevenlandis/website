@@ -106,14 +106,15 @@ At the end of the project, I was happy with the increased speed but I wasn't sat
 
 # Iteration IV: C++
 
-Junior year of college began and I had a sudden desire to re-write the fractal in C++. I intended for this to be the final language because c++ is the fastest next to C.
+Junior year of college began and I had a sudden desire to re-write the fractal in C++. I intend for this to be the final language because C++ is the fastest next to C.
 
 This version would have no expenses spared: The fastest algorithm. The best positioning logic. The best output format.
 
 ## The Fastest Algorithm
 
-To make this drawer run blazingly fast with billions of points, I had to streamline the auto-positioning logic and I got it down to `O(n log(n))` with the following steps:
+I haven't figured out a better `getTurn()`, but it turns out centering the fractal in the screen is a harder problem than generating the fractal in the first place.
 
+To make this drawer run blazingly fast with billions of points, I had to streamline the auto-positioning logic and I got it down to `O(n log(n))` with the following steps:
 
 1. Calculate the path given a base shape and the number of iterations.
 2. Calculate the [Convex Hull](https://en.wikipedia.org/wiki/Graham_scan) of the path which makes the algorithm `O(n log(n))`.
@@ -126,15 +127,15 @@ That algorithm is not only fast - it's optimal. It finds the best starting angle
 
 ## The Best Output Format
 
-I finally went with outputting to an image instead of opening a window and drawing to the screen as I did with my Python and Java attempts. This meant I could automate fractal-creation and save images without screen shots which introduce human error.
+I finally went with outputting to an image instead of opening a window and drawing to the screen as I did with my Python and Java attempts. This meant I could automate fractal-creation and save images without screen shots which reduces human error.
 
 I decided to write to .bmp files because it was the first algorithm I found to easily write images from C++. I then used [ImageMagik](https://imagemagick.org/index.php) to convert to .jpg which I used on this site for reduced file size.
 
-Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I [*strongly dislike* using libraries](software.html) so I found a line drawing algorithm online. In the future I might figure out how to draw from .svg or add different line weights.
+Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I [*strongly dislike* using libraries](software.html) so I found copied a line drawing algorithm online. In the future, I might figure out how to draw from .svg or add different line thicknesses.
 
 ## Colors
 
-As I was now making my own images, I decided to experiment with color. I made lines that smoothly cycled through primary colors and messed around with eroding fractals to create groovy topographical shapes.
+As I was now making my own images, I decided to experiment with color by cycling through colors while drawing the fractal and adding some groovy erosion patterns that look like topographical maps.
 
 ## Results
 
@@ -144,4 +145,4 @@ You can see a [list of fractal pictures](fractals.html) here. I kept the colors 
 
 At this point I have most of the algorithms in place to make fractals well, but the algorithm isn't accessible (even to me). The easiest solution it to make a web page for previewing and saving fractals. A UI will also make it easier to test out new fractals instead of changing code, re-running the .exe and opening the output picture.
 
-Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better. This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!
+Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better (I know how crazy that sounds). This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!
