@@ -35,5 +35,98 @@
 
 <p>The first recipe makes it clear what the cook needs to do for each step but makes more work for the recipe writer.</p>
 
-<p>In the second recipe, ingredients are implied by the instructions which is easier for the recipe writer but harder to see required ingredients.</p>
+<p>In the second recipe, ingredients are implied by the instructions which is easier for the recipe writer but harder to see required ingredients. I would rather write a program using the second approach and use a program analysis tool to create the first form.</p>
+
+<p>Consider the following code snippet:</p>
+
+<div class="code"><pre><span></span><code><span class="c1">// The function wait(cond, fcn) waits until condition is true</span>
+<span class="c1">// to run fcn.</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set a and b&#39;</span><span class="p">);</span>
+
+<span class="nx">wait</span><span class="p">(</span><span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;a and b are both true!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set up wait function&#39;</span><span class="p">);</span>
+
+<span class="nx">a</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set a to true&#39;</span><span class="p">);</span>
+
+<span class="nx">b</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set b to true&#39;</span><span class="p">);</span>
+
+
+<span class="cm">/*</span>
+<span class="cm">OUTPUT</span>
+<span class="cm">&gt; set a and b</span>
+<span class="cm">&gt; set up wait function</span>
+<span class="cm">&gt; set a to true</span>
+<span class="cm">&gt; a and b are both true!</span>
+<span class="cm">&gt; set b to true</span>
+<span class="cm">*/</span>
+</code></pre></div>
+
+<p>This isn't achievable with normal javascript, but a few small changes would make this program possible.</p>
+
+<div class="code"><pre><span></span><code><span class="c1">// The function wait(cond, fcn) waits until condition is true</span>
+<span class="c1">// to run fcn.</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">Var</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">Var</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set a and b&#39;</span><span class="p">);</span>
+
+<span class="nx">wait</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">a</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">get</span><span class="p">()},</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;a and b are both true!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set up wait function&#39;</span><span class="p">);</span>
+
+<span class="nx">a</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set a to true&#39;</span><span class="p">);</span>
+
+<span class="nx">b</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set b to true&#39;</span><span class="p">);</span>
+
+
+<span class="cm">/*</span>
+<span class="cm">OUTPUT</span>
+<span class="cm">&gt; set a and b</span>
+<span class="cm">&gt; set up wait function</span>
+<span class="cm">&gt; set a to true</span>
+<span class="cm">&gt; a and b are both true!</span>
+<span class="cm">&gt; set b to true</span>
+<span class="cm">*/</span>
+</code></pre></div>
+
+<p>Just like the second recipe approach, <code>wait()</code> remembers what variables it's condition uses when it first runs. Whenever one of those variables changes, it re-runs the condition. When both <code>a</code> and <code>b</code> are set to <code>true</code>, the waited function finally runs.</p>
+
+<p>This optimization is very efficient because it only checks the condition when one of its dependencies changes. This also creates very clean code and lets the library handle all dependency analysis.</p>
+
+<p>In addition, <code>a</code> or <code>b</code> could be a computed variable:</p>
+
+<div class="code"><pre><span></span><code><span class="kd">var</span> <span class="nx">a1</span> <span class="o">=</span> <span class="nx">Var</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="nx">Var</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">FcnVar</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">a1</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="o">||</span> <span class="nx">a2</span><span class="p">.</span><span class="nx">get</span><span class="p">());</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">Var</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="nx">wait</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="nx">a</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">get</span><span class="p">()},</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;a and b are both true!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set up wait function&#39;</span><span class="p">);</span>
+
+<span class="nx">a1</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set a1 to true&#39;</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">OUTPUT</span>
+<span class="cm">&gt; set variables</span>
+<span class="cm">&gt; set up wait function</span>
+<span class="cm">&gt; a and b are both true!</span>
+<span class="cm">&gt; set a1 to true</span>
+<span class="cm">*/</span>
+</code></pre></div>
+
+<p>The library automatically figures out that <code>a</code> depends on <code>a1</code> and <code>a2</code>, so changing their values propagates the change up to <code>wait</code>.</p>
 </div></body></html>
