@@ -59,6 +59,15 @@ function mergeAttrs(dest, attrs) {
       dest.style[key] = attrs.style[key];
     }
   }
+  if (attrs.type !== undefined) {
+    dest.type = attrs.type;
+  }
+  if (attrs.checked !== undefined) {
+    dest.checked = attrs.checked;
+  }
+  if (attrs.id !== undefined) {
+    dest.id = attrs.id;
+  }
 
   // for (const key of Object.keys(dest.style)) {
   //   if (attrs.style[key] === undefined && dest.style[key] !== '') {
