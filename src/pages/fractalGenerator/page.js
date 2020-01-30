@@ -1,15 +1,38 @@
+const print = console.log;
+
 var data = {
   width: '700',
   height: '500',
   fractalString: '1 90 1',
-  iterations: '5'
+  iterations: '1',
+  mirrored: true,
+  backgroundColor: 0,
+  lineColor: 1,
+  message: 'Idle',
 };
 
+const backgroundColors = [
+  '#000000',
+  '#ffffff',
+  '#eb0c0c',
+  '#100ceb',
+  '#2dd921',
+];
+
+const lineColors = [
+  '#000000',
+  '#ffffff',
+  '#eb0c0c',
+  '#100ceb',
+  '#2dd921',
+  'rainbow',
+];
+
 function verifyFractalString(errors) {
-  numbers = data.fractalString.split(' ').map(n => parseInt(n));
+  numbers = data.fractalString.split(' ').map(n => parseFloat(n));
   if (numbers.some(isNaN)) {
     errors.push(
-      'Fractal string must be space separated integers. Example: "1 90 1"'
+      'Fractal string must be space separated numbers. Example: "1 90 1"'
     );
     return;
   }
@@ -57,7 +80,17 @@ function verifyData(errors) {
     errors.push('Iterations must be an int.');
   }
 
-  return { width, height, base, iterations };
+  if (errors.length > 0) return;
+
+  return {
+    width,
+    height,
+    iterations,
+    angles: base.angles,
+    lengths: base.lengths,
+    mirrored: data.mirrored,
+    turns: Fractal.getTurns(base.angles.length, iterations),
+  };
 }
 
 function LabeledInput(label, varName) {
@@ -77,6 +110,120 @@ function LabeledInput(label, varName) {
   ]);
 }
 
+function LabeledInt(label, varName) {
+  return Elem('div', [
+    Elem('div', label, {
+      style: {
+        display: 'inline'
+      }
+    }),
+    Elem('input', '', {
+      value: data[varName],
+      oninput: event => {
+        data[varName] = event.target.value;
+        render();
+      }
+    }),
+    Elem('button', '-', {onClick: event => {
+      data[varName] = Math.max(0, data[varName]-1);
+      render();
+    }}),
+    Elem('button', '+', {onClick: event => {
+      data[varName]++;
+      render();
+    }}),
+  ]);
+}
+
+function LabeledCheckbox(label, varName) {
+  return Elem('div', [
+    Elem('div', label, {
+      style: {
+        display: 'inline'
+      }
+    }),
+    Elem('input', '', {
+      type: 'checkbox',
+      checked: data[varName],
+      oninput: event => {
+        data[varName] = !data[varName];
+        render();
+      }
+    })
+  ]);
+}
+
+function LabeledColor(label, varName, colors) {
+  const colorElems = colors.map((color, i) => Elem('div', Elem('div', '', {
+    style: {
+      width: '1.5em',
+      height: '1.5em',
+      ...(color === 'rainbow'
+        ? {backgroundImage: 'linear-gradient(to right, red,orange,yellow,green,blue,indigo,violet)'}
+        : {background: color}
+      )
+    }
+  }), {
+    style: {
+      display: 'inline-block',
+      verticalAlign: 'middle',
+      marginRight: '1em',
+      padding: '0.2em',
+      border: i === data[varName]
+        ? 'solid black 2px'
+        : 'dotted black 2px',
+    },
+    onClick: event => {
+      data[varName] = i;
+      render();
+    },
+  }));
+
+  return Elem('div', [
+    Elem('div', label, {
+      style: {
+        display: 'inline',
+        verticalAlign: 'middle',
+      }
+    }),
+    ...colorElems,
+  ], {
+    style: {
+      marginTop: '0.5em',
+    }
+  });
+}
+
+function Message(txt) {
+  return Elem('div', txt);
+}
+
+function addSummary(data, content) {
+  const elems = [];
+  elems.push(Elem('div',
+    `Angles(deg): ${data.angles.join(', ')}`
+  ));
+  elems.push(Elem('div',
+    `Lengths: ${data.lengths.join(', ')}`
+  ));
+  elems.push(Elem('div',
+    `Iterations: ${data.iterations}`
+  ));
+  elems.push(Elem('div',
+    `Size: (${data.width} x ${data.height})`
+  ));
+  elems.push(Elem('div',
+    `Mirrored: ${data.mirrored}`
+  ));
+  elems.push(Elem('span', 'Turns: '));
+  elems.push(Elem('span', `${data.turns}`, {style: {
+    color: data.turns > 10000000 ? 'red' : 'black'
+  }}));
+
+  content.push(Elem('div', elems, {style: {fontWeight: 'bold', margin: '1em'}}))
+}
+
+let worker = undefined;
 function render() {
   pageElem = document.getElementsByTagName('body')[0];
 
@@ -86,16 +233,17 @@ function render() {
   var content = [];
 
   content.push(LabeledInput('Fractal String: ', 'fractalString'));
-  if (processedData.base !== undefined) {
-    content.push(Elem('div', 'render'));
-  }
-
-  content.push(LabeledInput('Iterations: ', 'iterations'));
+  content.push(LabeledInt('Iterations: ', 'iterations'));
   content.push(LabeledInput('width: ', 'width'));
   content.push(LabeledInput('height: ', 'height'));
+  content.push(LabeledCheckbox('mirrored: ', 'mirrored'));
+  content.push(LabeledColor('Background: ', 'backgroundColor', backgroundColors));
+  content.push(LabeledColor('Line: ', 'lineColor', lineColors));
 
   if (errors.length === 0) {
-    content.push(Elem('div', Elem('button', 'Draw!')));
+    addSummary(processedData, content);
+
+    content.push(Elem('div', data.message, {id: 'message'}));
 
     content.push(
       Elem('canvas', '', {
@@ -116,6 +264,63 @@ function render() {
   var page = Elem('body', Elem('div', content), { style: { margin: '1em' } });
 
   page.merge(pageElem);
+
+  if (errors.length === 0) {
+    const canvas = document.body.getElementsByTagName('canvas')[0];
+    const ctx = canvas.getContext('2d');
+
+    // use web worker to do fractal calculation
+    if (worker !== undefined) worker.terminate();
+    worker = new Worker('fractalWorker.js');
+    ctx.beginPath();
+    ctx.rect(0,0,processedData.width, processedData.height);
+    ctx.fillStyle = backgroundColors[data.backgroundColor];
+    ctx.fill();
+
+    let turnI = 0;
+
+    worker.addEventListener('message', event => {
+      switch(event.data.type) {
+      case 'points':
+        const scaledPoints = event.data.points;
+        if (lineColors[data.lineColor] === 'rainbow') {
+          for (let i = 1;  i < scaledPoints.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(scaledPoints[i-1][0], scaledPoints[i-1][1]);
+            ctx.lineTo(scaledPoints[i][0], scaledPoints[i][1]);
+            const color = Color.getPrimaryColor(turnI/processedData.turns);
+            ctx.strokeStyle = Color.rgbToHex(color);
+            ctx.stroke();
+            turnI++;
+          }
+        } else {
+          ctx.beginPath();
+          ctx.moveTo(scaledPoints[0][0], scaledPoints[0][1]);
+          for (let i = 1;  i < scaledPoints.length; i++) {
+            ctx.lineTo(scaledPoints[i][0], scaledPoints[i][1]);
+          }
+          ctx.strokeStyle = lineColors[data.lineColor];
+          ctx.stroke();
+        }
+        break;
+      case 'message':
+        data.message = event.data.message;
+        const message = Message(data.message);
+        message.merge(document.getElementById('message'));
+        break;
+      }
+      
+    });
+    worker.addEventListener('messageerror', event => {
+      print('message error:');
+      print(event);
+    });
+    worker.addEventListener('error', event => {
+      print('error:');
+      print(event);
+    });
+    worker.postMessage(processedData);
+  }
 }
 
 window.addEventListener('load', () => {

@@ -13,7 +13,9 @@ def build(pathGetter):
         '<style type="text/css" media="print">@page {size: auto;margin: 0;}</style>',
         Script('pr.js', pathGetter),
         Script('Elem.js', pathGetter),
-        '<script type="text/javascript" src="page.js"></script>'
+        '<script type="text/javascript" src="color.js"></script>',
+        '<script type="text/javascript" src="fractal.js"></script>',
+        '<script type="text/javascript" src="page.js"></script>',
     ]
 
     content = ['content']
