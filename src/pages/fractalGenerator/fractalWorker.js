@@ -1,4 +1,4 @@
-importScripts('Fractal.js');
+importScripts('fractal.js');
 console.log('starting worker');
 
 self.addEventListener('message', event => {
