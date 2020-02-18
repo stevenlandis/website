@@ -9,7 +9,7 @@ def PostsPage(posts, builder):
 
     postInfo = []
     for file in posts:
-        href = f'posts/{file.title}.html'
+        href = f'posts/{file.title}'
         label = 'generic label'
         if file.type == 'md':
             txt = file.read()

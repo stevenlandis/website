@@ -43,7 +43,6 @@ p {
 
 code  {
     font-size: 16px;
-    background-color: #C2C2C2;
     padding-left: 0.1rem;
     padding-right: 0.1rem;
 }
@@ -56,12 +55,12 @@ p, ol, ul {
     font-size: 1rem;
 }
 
-pre {
+.codeblock {
     padding: 0.5em;
     margin: 0;
     font-size: 16px;
-    background-color: #C2C2C2;
     overflow: auto;
+    border-radius: 1em;
 }
 
 blockquote {

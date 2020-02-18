@@ -70,7 +70,7 @@ def build(pathGetter):
             [
                 SectionTitle('UNIVERSITY OF CALIFORNIA SANTA BARBARA'),
                 SectionText('COMPUTER ENGINEERING | GRADUATION: JUNE 2020'),
-                SectionText('GPA: 3.98')
+                SectionText('GPA: 3.96')
             ]
         ),
         Section(
@@ -99,7 +99,7 @@ def build(pathGetter):
                     'Wrote a charting library from the ground up',
                     'Starting with no prior experience, became go-to person for questions about testing, React and Typescript in about 5 weeks',
                     'Used developer feedback to streamline chart-creation functions and make library easy to modify',
-                    'Worked with other developers to integrate charts into application'
+                    'Worked with other developers to integrate charts into main application'
                 ]),
                 HR(),
                 SectionTitle('SOFTWARE ENGINEER'),

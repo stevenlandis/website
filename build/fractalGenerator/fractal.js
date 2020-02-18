@@ -80,37 +80,33 @@ const Fractal = {
     }
   },
   getPoints(base, lengths, mirrored, d0, turns) {
+    // convert base to radians
+    base = base.map(a => Math.PI * a / 180);
+
     const points = [];
     let dir = d0;
     points.push([0, 0]);
     let x = 0;
     let y = 0;
 
-    let sinTable = [];
-    let cosTable = [];
-    for (let i = 0; i < 360; i++) {
-      sinTable[i] = Math.sin(i*PI/180);
-      cosTable[i] = Math.cos(i*PI/180);
-    }
-
     let baseSize = base.length + 1;
     for (let i = 1; i <= turns; i++) {
       const lengthI = Fractal.getLengthI(baseSize, mirrored, i-1);
       const len = lengths[lengthI];
-      x += len * cosTable[dir];
-      y += len * sinTable[dir];
+      x += len * Math.cos(dir);
+      y += len * Math.sin(dir);
       points.push([x, y]);
 
       const turnI = Fractal.getTurnI(baseSize, mirrored, i);
       if (turnI < 0) {dir -= base[-turnI - 1];}
       else {dir += base[turnI - 1];}
-      dir = positiveModulo(dir, 360);
+      dir = positiveModulo(dir, 2*Math.PI);
     }
 
     const lengthI = Fractal.getLengthI(baseSize, mirrored, turns);
     const len = lengths[lengthI];
-    x += len * cosTable[dir];
-    y += len * sinTable[dir];
+    x += len * Math.cos(dir);
+    y += len * Math.sin(dir);
     points.push([x, y]);
 
     return points;
@@ -192,6 +188,30 @@ const Fractal = {
     }
 
     return {minX, maxX, minY, maxY};
+  },
+  getBottomLeftPoints(points) {
+    const {minX, maxX, minY, maxY} = Fractal.getBounds(points);
+    const [x,y] = points[0];
+    const cx = (minX + maxX)/2;
+    const cy = (minY + maxY)/2;
+    const angle = Math.atan2(y-cy, x-cx);
+    let xScale = 1;
+    let yScale = 1;
+    if (angle < -Math.PI/2) {
+      // console.log(`x: ${x-cx}, y: ${y-cy} --> 1`);
+      yScale = -1;
+    } else if (angle < 0) {
+      // console.log(`x: ${x-cx}, y: ${y-cy} --> 2`);
+      xScale = -1;
+      yScale = -1;
+    } else if (angle < Math.PI/2) {
+      // console.log(`x: ${x-cx}, y: ${y-cy} --> 3`);
+      xScale = -1;
+    }
+    return points.map(([x, y]) => [
+      x * xScale,
+      y * yScale,
+    ]);
   },
   getScaledPoints(points, width, height, padding) {
     const {minX, maxX, minY, maxY} = Fractal.getBounds(points);

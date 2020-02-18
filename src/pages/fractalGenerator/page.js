@@ -13,6 +13,7 @@ var data = {
 
 const backgroundColors = [
   '#000000',
+  '#9e9c95',
   '#ffffff',
   '#eb0c0c',
   '#100ceb',
@@ -21,6 +22,7 @@ const backgroundColors = [
 
 const lineColors = [
   '#000000',
+  '#9e9c95',
   '#ffffff',
   '#eb0c0c',
   '#100ceb',
@@ -198,6 +200,23 @@ function Message(txt) {
   return Elem('div', txt);
 }
 
+function SaveButton() {
+  return Elem('div', Elem('button', 'Save as image', {
+      onClick: () => {
+        print('clicked');
+        const canvas = document.body.getElementsByTagName('canvas')[0];
+        const image = canvas
+          .toDataURL('image/png')
+          .replace('image/png', 'image/octet-stream');
+
+        const link = document.createElement('a');
+        link.setAttribute('download', 'image.png');
+        link.setAttribute('href', image);
+        link.click();
+      }
+    }));
+}
+
 function addSummary(data, content) {
   const elems = [];
   elems.push(Elem('div',
@@ -255,6 +274,8 @@ function render() {
         }
       })
     );
+
+    content.push(SaveButton());
   } else {
     content.push(
       Elem('div', errors.map(e => Elem('div', e)), { style: { color: 'red' } })

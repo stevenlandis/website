@@ -10,9 +10,10 @@ def NavBarLink(name, href, first=False):
 def Navbar(pathGetter, links=None):
     if links == None:
         links = [
-            ('Home', 'index.html'),
-            ('Resume', 'resume.html'),
-            ('Posts', 'postsList.html')
+            ('Home', '/'),
+            ('Resume', 'resume'),
+            ('Posts', 'postsList'),
+            ('Fractal Generator', 'fractalGenerator/fractal')
         ]
         return Navbar(pathGetter, links)
 

@@ -1,8 +1,14 @@
 importScripts('fractal.js');
-console.log('starting worker');
+
+function msg(txt) {
+  postMessage({
+    type: 'message',
+    message: txt,
+  });
+}
 
 self.addEventListener('message', event => {
-  console.log('Starting fractal calc:');
+  // console.log('Starting fractal calc:');
   // console.log(event.data);
 
   // do the fractal calculation
@@ -13,10 +19,8 @@ self.addEventListener('message', event => {
   const width = event.data.width;
   const height = event.data.height;
   const nTurns = Fractal.getTurns(angles.length, iterations);
-  postMessage({
-    type: 'message',
-    message: 'Getting points.'
-  });
+
+  msg('Getting points.');
   const points = Fractal.getPoints(
     angles,
     lengths,
@@ -24,24 +28,19 @@ self.addEventListener('message', event => {
     0,
     nTurns
   );
-  postMessage({
-    type: 'message',
-    message: 'Finding best angle.'
-  });
+
+  msg('Finding best angle.');
   let bestAngle = Fractal.getOptimalAngleOffset(points);
   if (height > width) bestAngle += Math.PI/2;
-  postMessage({
-    type: 'message',
-    message: 'Rotating points to best angle.'
-  });
+
+  msg('Rotating points to best angle.');
   const rotatedPoints = Fractal.getRotatedPoints(points, bestAngle);
-  // print(rotatedPoints);
-  postMessage({
-    type: 'message',
-    message: 'Scaling points to fit image.'
-  });
-  const scaledPoints = Fractal.getScaledPoints(rotatedPoints, width, height, 0.1);
-  // print(scaledPoints);
+
+  msg('Mirroring points to start in bottom left');
+  const mirroredPoints = Fractal.getBottomLeftPoints(rotatedPoints);
+
+  msg('Scaling points to fit image.');
+  const scaledPoints = Fractal.getScaledPoints(mirroredPoints, width, height, 0.1);
 
   // send points in blocks of size
   const size = 1000;

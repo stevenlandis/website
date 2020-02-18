@@ -12,12 +12,12 @@ This post is my story about exploring and creating the dragon curve.
 
 I first started by learning about the curve on Wikipedia. There was a lot of complex math I didn't understand but there were a few gifs that explained the curve in a way I could understand.
 
-The first image: ![unfolding](https://upload.wikimedia.org/wikipedia/commons/a/a0/Dragon_Curve_unfolding_zoom_numbered.gif)
+The first image: ![unfolding](Dragon_Curve_unfolding_zoom_numbered.gif)
 
 This image shows how the fractal is made by starting with an 'L' shape and unfolding the shape to form the next iteration.
 
 The other way to visualize the fractal is the recursive approach:
-![recursive](https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif/300px-Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif)
+![recursive](300px-Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif)
 
 The next iteration is formed by replacing each line segment with the base 'L' shape.
 
@@ -146,3 +146,7 @@ You can see a [list of fractal pictures](fractals.html) here. I kept the colors 
 At this point I have most of the algorithms in place to make fractals well, but the algorithm isn't accessible (even to me). The easiest solution it to make a web page for previewing and saving fractals. A UI will also make it easier to test out new fractals instead of changing code, re-running the .exe and opening the output picture.
 
 Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better (I know how crazy that sounds). This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!
+
+## Update!
+
+The web version of the [fractal generator](/fractalGenerator/fractal) is live!

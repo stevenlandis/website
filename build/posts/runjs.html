@@ -1,12 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><title>Run.js</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">Run.js</div><div class="navbar"><span><a href="../index.html">Home</a></span><span><a style="margin-left:3em;" href="../resume.html">Resume</a></span><span><a style="margin-left:3em;" href="../postsList.html">Posts</a></span></div><p>I recently had a summer internship where I was exposed to React. I was blown away but how easy it lets me create applications, but I ran into a few situations where the framework fell short. This post is about my plans for (Yet another) javascript application development framework.</p>
-
+<!DOCTYPE html><html lang="en"><head><title>Run.js</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">Run.js</div><div class="navbar"><span><a href="..//">Home</a></span><span><a style="margin-left:3em;" href="../resume">Resume</a></span><span><a style="margin-left:3em;" href="../postsList">Posts</a></span><span><a style="margin-left:3em;" href="../fractalGenerator/fractal">Fractal Generator</a></span></div><p>I recently had a summer internship where I was exposed to React. I was blown away but how easy it lets me create applications, but I ran into a few situations where the framework fell short. This post is about my plans for (Yet another) javascript application development framework.</p>
 <p>React is one of many emerging frameworks that use Declarative Programming, a style of programming where the programmer explains what the resulting application should look like and leaves efficiently changing state up to the framework. You write the application once and use callbacks to initiate changes to program state.</p>
-
-<p>The core of my framework is a function <code>run(fcn)</code> that executes a lambda function in a specific environment. When it runs that function it also keeps track of all dependencies of <code>fcn</code>, so when any of those dependencies change, <code>fcn</code> re-runs. That's it!</p>
-
+<p>The core of my framework is a function <code class="code codespan">run(fcn)</code> that executes a lambda function in a specific environment. When it runs that function it also keeps track of all dependencies of <code class="code codespan">fcn</code>, so when any of those dependencies change, <code class="code codespan">fcn</code> re-runs. That's it!</p>
 <p>Consider the following code for example:</p>
-
-<div class="code"><pre><span></span><code><span class="kd">let</span> <span class="nx">aRef</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<pre class="code codeblock"><code><span></span><span class="kd">let</span> <span class="nx">aRef</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">bRef</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
 
 <span class="nx">run</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
@@ -22,19 +18,12 @@
 <span class="cm">a: 1, b: 2</span>
 <span class="cm">a: 5, b: 2</span>
 <span class="cm">*/</span>
-</code></pre></div>
-
-<p>When the function <code>run</code> is called for the first time it records that the run function depends on <code>a</code> and <code>b</code>, so when <code>a</code> changes to <code>5</code>, it re-runs the function which prints out another line.</p>
-
+</code></pre><p>When the function <code class="code codespan">run</code> is called for the first time it records that the run function depends on <code class="code codespan">a</code> and <code class="code codespan">b</code>, so when <code class="code codespan">a</code> changes to <code class="code codespan">5</code>, it re-runs the function which prints out another line.</p>
 <p>Just this functionality is incredibly powerful because you can design your application as a graph using natural programming styles and splitting large section of code into smaller run functions that can be re-run as the application changes.</p>
-
 <p>This lets the developer naturally design parts of the application to run as different states change. It also removes the issue of multiple sources of truth because as soon as a variable changes, all functions that use that variable also re-run.</p>
-
 <h2>Ongoing Progress</h2>
-
-<p>My current challenge is thinking about another function, <code>place()</code> for placing elements in the DOM. This is a necessary part of any js app framework and I'm still thinking about how to set up my code to run efficiently. That being said, I'm pretty confident how <code>place</code> will work.</p>
-
-<div class="code"><pre><span></span><code><span class="nx">run</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="nx">bodyElem</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+<p>My current challenge is thinking about another function, <code class="code codespan">place()</code> for placing elements in the DOM. This is a necessary part of any js app framework and I'm still thinking about how to set up my code to run efficiently. That being said, I'm pretty confident how <code class="code codespan">place</code> will work.</p>
+<pre class="code codeblock"><code><span></span><span class="nx">run</span><span class="p">.</span><span class="nx">mount</span><span class="p">(</span><span class="nx">bodyElem</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">nameRef</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="s1">&#39;Joe&#39;</span><span class="p">);</span>
     <span class="kd">let</span> <span class="nx">itemsRef</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">([</span><span class="s1">&#39;Stuff&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;things&#39;</span><span class="p">].</span><span class="nx">map</span><span class="p">(</span><span class="nx">Ref</span><span class="p">));</span>
 
@@ -48,11 +37,8 @@
         <span class="p">}</span>
     <span class="p">})</span>
 <span class="p">})</span>
-</code></pre></div>
-
-<p>Which renders</p>
-
-<div class="code"><pre><span></span><code><span class="nt">&lt;body&gt;</span>
+</code></pre><p>Which renders</p>
+<pre class="code codeblock"><code><span></span><span class="nt">&lt;body&gt;</span>
     <span class="nt">&lt;div&gt;</span>Joe<span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;ul&gt;</span>
         <span class="nt">&lt;li&gt;</span>Stuff<span class="nt">&lt;/li&gt;</span>
@@ -60,23 +46,16 @@
         <span class="nt">&lt;li&gt;</span>things<span class="nt">&lt;/li&gt;</span>
     <span class="nt">&lt;/ul&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
-</code></pre></div>
-
-<p>This setup also means that if a function changes <code>nameRef</code> to Sam with <code>nameRef.set('Sam')</code>, only the text content of the first div will change which means the application state just efficiently re-rendered.</p>
-
-<p>I can just as easily change the list element with <code>itemsRef[0].set('things')</code> which changes the first element of the list. I'm still not sure what syntax I should use for base data types to support automatic re-renders on built-in functions like <code>push</code> and <code>pop</code>.</p>
-
+</code></pre><p>This setup also means that if a function changes <code class="code codespan">nameRef</code> to Sam with <code class="code codespan">nameRef.set('Sam')</code>, only the text content of the first div will change which means the application state just efficiently re-rendered.</p>
+<p>I can just as easily change the list element with <code class="code codespan">itemsRef[0].set('things')</code> which changes the first element of the list. I'm still not sure what syntax I should use for base data types to support automatic re-renders on built-in functions like <code class="code codespan">push</code> and <code class="code codespan">pop</code>.</p>
 <p>I believe this style of making applications has a few disadvantages with React:</p>
-
 <ul>
 <li>No JSX syntax.</li>
 <li>Harder to read.</li>
 </ul>
-
 <p>And a few advantages:</p>
-
 <ul>
-<li>Flexible <code>place</code> syntax.</li>
+<li>Flexible <code class="code codespan">place</code> syntax.</li>
 <li>Full developer control with how the application re-renders.</li>
 <li>More power for passing variables around.</li>
 </ul>

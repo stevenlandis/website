@@ -40,7 +40,7 @@ However, there are a few features that can't be implemented because of this chan
 - Multithreading: bld2 can no longer create a task queue and distribute building steps on multiple processors because it can't reason about dependency. This feature wasn't implemented in bld, but that feature is no longer possible.
 - Automatic clean function: bld2 can no longer automatically remove created files. However, now that I think about it, programmers can just store a list of all created files and remove the files from that list on clean. Having a list of created files would also be useful for obsolete files. I like this better.
 
-And that's the thing. The more I think about functionality that gets lost in the transition from imperative to functional, the more I find solutions. I guess it's easier to build a functional system atop an imperative system than the other way around.
+And that's the thing. The more I think about functionality that gets lost in the transition from imperative to functional, the more solutions I find. I guess it's easier to build a functional system atop an imperative system than the other way around.
 
 The best guarantee for a partial-building system is the output is identical to if the project was build from scratch for the first time. It is very functional because the programmer just describes what they want the output to look like and not how to achieve that output. What, not how.
 

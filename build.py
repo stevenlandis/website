@@ -54,7 +54,7 @@ def getPages(inDir, outDir, basePath):
         elif inFile.type == 'md':
             outFile = outDir.getFile(f'{inFile.title}.html')
             MarkdownRule(inFile, outFile, basePath)
-        elif inFile.type in ['js', 'png', 'jpg']:
+        elif inFile.type in ['js', 'png', 'jpg', 'gif']:
             outFile = outDir.getFile(inFile.name)
             bld.CopyRule(inFile, outFile)
 
@@ -88,9 +88,38 @@ def watch():
     resDir = getResDir()
     resDir.watch('..')
 
-def main():
-    fractalPics()
+def serve():
+    import http.server
+    import socketserver
+    import os
 
+    PORT = 8000
+    class Handler(http.server.SimpleHTTPRequestHandler):
+        def do_GET(self):
+            self.path = 'build' + self.path
+            if not os.path.isdir(self.path):
+                _, ext = os.path.splitext(self.path)
+                if ext == '': self.path += '.html'
+            super().do_GET()
+
+    with socketserver.TCPServer(('', PORT), Handler) as httpd:
+        print(f'serving at port {PORT}')
+        httpd.serve_forever()
+
+def main():
+    # from os.path import join
+    # from src.parser.md import parseMd
+    # from src.parts.Markdown import Markdown
+    # with open(join('src','pages','posts','bld2.md'), 'r') as f:
+    #     txt = f.read()
+    # md = Markdown(txt=txt)
+    # # print(md)
+    # return
+    # post = frontmatter.loads(txt)
+    # mdText = Markdown(txt=post.content)
+    # print(mdText)
+    # return
+    fractalPics()
     site()
 
 def buildFractalPics():
