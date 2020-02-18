@@ -18,6 +18,6 @@ def build(pathGetter):
         '<script type="text/javascript" src="page.js"></script>',
     ]
 
-    content = ['content']
+    content = ['loading javascript']
 
     return Page('Fractal Generator', head, content)
