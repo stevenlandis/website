@@ -1,29 +1,17 @@
-<!DOCTYPE html><html lang="en"><head><title>Dragon Curve</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">Dragon Curve</div><div class="navbar"><span><a href="../index.html">Home</a></span><span><a style="margin-left:3em;" href="../resume.html">Resume</a></span><span><a style="margin-left:3em;" href="../postsList.html">Posts</a></span></div><p><img src="../fractalPics/dragon.jpg" alt="dragon curve" /></p>
-
-<p>See a list of all my fractals <a href="fractals.html">here</a></p>
-
+<!DOCTYPE html><html lang="en"><head><title>Dragon Curve</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">Dragon Curve</div><div class="navbar"><span><a href="..//">Home</a></span><span><a style="margin-left:3em;" href="../resume">Resume</a></span><span><a style="margin-left:3em;" href="../postsList">Posts</a></span><span><a style="margin-left:3em;" href="../fractalGenerator/fractal">Fractal Generator</a></span></div><p><img src="../fractalPics/dragon.jpg" alt="dragon curve"></p>
+<p>See a list of all my fractals <a href="fractals" title="here">here</a></p>
 <p>I first heard about the dragon curve in 8th grade math class. The assignment was to research a cool math concept and I stumbled upon the dragon curve. I was immediately engrossed by its strange complexity and wanted to learn more about how it worked.</p>
-
 <p>This post is my story about exploring and creating the dragon curve.</p>
-
 <p>I first started by learning about the curve on Wikipedia. There was a lot of complex math I didn't understand but there were a few gifs that explained the curve in a way I could understand.</p>
-
-<p>The first image: <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Dragon_Curve_unfolding_zoom_numbered.gif" alt="unfolding" /></p>
-
+<p>The first image: <img src="Dragon_Curve_unfolding_zoom_numbered.gif" alt="unfolding"></p>
 <p>This image shows how the fractal is made by starting with an 'L' shape and unfolding the shape to form the next iteration.</p>
-
 <p>The other way to visualize the fractal is the recursive approach:
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif/300px-Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif" alt="recursive" /></p>
-
+<img src="300px-Dragon_Curve_adding_corners_trails_rectangular_numbered_R.gif" alt="recursive"></p>
 <p>The next iteration is formed by replacing each line segment with the base 'L' shape.</p>
-
 <h1>Iteration I: Python</h1>
-
-<p>I immediately wanted to make this fractal myself which required figuring out which way to turn. The dragon curve is a single path that never intersects with itself so I only had to figure out which direction the path turned for turn <code>n</code>. Left or Right.</p>
-
+<p>I immediately wanted to make this fractal myself which required figuring out which way to turn. The dragon curve is a single path that never intersects with itself so I only had to figure out which direction the path turned for turn <code class="code codespan">n</code>. Left or Right.</p>
 <p>Through trial and error I discovered the following algorithm:</p>
-
-<div class="code"><pre><span></span><code><span class="c1"># returns 0 for left and 1 for right</span>
+<pre class="code codeblock"><code><span></span><span class="c1"># returns 0 for left and 1 for right</span>
 <span class="k">def</span> <span class="nf">getTurn</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="c1"># divide n by 2 as many times as possible</span>
     <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -36,27 +24,18 @@
 
 <span class="k">print</span><span class="p">([</span><span class="n">getTurn</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">)])</span>
 <span class="c1"># [1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0]</span>
-</code></pre></div>
-
-<p>And that's it! I hooked this algorithm up to a <a href="https://docs.python.org/3.3/library/turtle?highlight=turtle">python turtle</a> to draw the fractal on screen.</p>
-
+</code></pre><p>And that's it! I hooked this algorithm up to a <a href="https://docs.python.org/3.3/library/turtle?highlight=turtle" title="python turtle">python turtle</a> to draw the fractal on screen.</p>
 <p>As with any project, I found a few areas to improve on:</p>
-
 <ul>
 <li>Speed. Python and turtle are slow so I needed a better way to quickly draw fractals.</li>
 <li>Framing. I quickly discovered how hard it is to measure fractals and display them on the center of a screen and I had to manually set the initial x and y so the fractal would be drawn in the center of the screen.</li>
 <li>Saving. I had to take screen shots of the screen to save fractals which blurred lines and made it hard to automatically save images.</li>
 </ul>
-
 <h1>Iteration II: Different Base Shapes</h1>
-
 <p>High school started and the dragon curve was still on my mind. Specifically I wanted to generalize this fractal-making-process for more fractals. You may have noticed me referring to a 'base shape L' when creating the dragon curve. I realized that the same logic of replacing each line segment of a path with another base shape could be applied to many paths besides 'L' so I figured out the math behind this logic.</p>
-
-<p>I also found some similar fractals such as the <a href="http://mathworld.wolfram.com/KochSnowflake.html">Koch Snowflake</a> that could be created by using different base shapes.</p>
-
-<p>I defined a base shape as an array of angles for each turn which means the dragon curve is <code>[90]</code> and a zig-zag is <code>[90, -90]</code>. I then defined a similar <code>getTurn()</code> function which returned the angle corresponding to turn <code>n</code>.</p>
-
-<div class="code"><pre><span></span><code><span class="c1"># n is int &gt;= 1</span>
+<p>I also found some similar fractals such as the <a href="http://mathworld.wolfram.com/KochSnowflake.html" title="Koch Snowflake">Koch Snowflake</a> that could be created by using different base shapes.</p>
+<p>I defined a base shape as an array of angles for each turn which means the dragon curve is <code class="code codespan">[90]</code> and a zig-zag is <code class="code codespan">[90, -90]</code>. I then defined a similar <code class="code codespan">getTurn()</code> function which returned the angle corresponding to turn <code class="code codespan">n</code>.</p>
+<pre class="code codeblock"><code><span></span><span class="c1"># n is int &gt;= 1</span>
 <span class="c1"># base is array of angles</span>
 <span class="c1"># mirrored is a boolean</span>
 <span class="k">def</span> <span class="nf">getTurn</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mirrored</span><span class="p">):</span>
@@ -78,74 +57,43 @@
 
 <span class="k">print</span><span class="p">([</span><span class="n">getTurn</span><span class="p">([</span><span class="mi">90</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span> <span class="n">n</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)])</span>
 <span class="c1"># [90, 60, 90, 90, 60, 60, 90, 60]</span>
-</code></pre></div>
-
-<p><code>mirrored</code> is a flag to invert the base path when replacing a segment with the base path. It is <code>True</code> for fractals like the dragon curve and <code>False</code> for fractals like the Koch Snowflake.</p>
-
+</code></pre><p><code class="code codespan">mirrored</code> is a flag to invert the base path when replacing a segment with the base path. It is <code class="code codespan">True</code> for fractals like the dragon curve and <code class="code codespan">False</code> for fractals like the Koch Snowflake.</p>
 <p>I messed around with this algorithm for a while and found some cool shapes, but I hadn't solved any base issues from Iteration II.</p>
-
 <h1>Iteration III: Java</h1>
-
 <p>Freshman year of college started and I was again looking to improve my dragon curve algorithm. I had heard that Java was a fast language and also easy to create graphics (I learned it is really hard to create a window with C++) so I found some example code and got it working.</p>
-
-<blockquote>
-  <p>Speed. Python and turtle are slow so I needed a better way to quickly draw fractals.</p>
+<blockquote><p>Speed. Python and turtle are slow so I needed a better way to quickly draw fractals.</p>
 </blockquote>
-
-<p>Java was much faster than Python. At the time I didn't know <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python.html">by how much</a>, but I later learned Java is many times faster for certain algorithms. While I didn't do any formal timing tests, I found I could now draw much larger fractals.</p>
-
-<blockquote>
-  <p>Framing. I quickly discovered how hard it is to measure fractals and display them on the center of a screen and I had to manually set the initial x and y so the fractal would be drawn in the center of the screen.</p>
+<p>Java was much faster than Python. At the time I didn't know <a href="https://benchmarksgame-team.pages.debian.net/benchmarksgame/fastest/python.html" title="by how much">by how much</a>, but I later learned Java is many times faster for certain algorithms. While I didn't do any formal timing tests, I found I could now draw much larger fractals.</p>
+<blockquote><p>Framing. I quickly discovered how hard it is to measure fractals and display them on the center of a screen and I had to manually set the initial x and y so the fractal would be drawn in the center of the screen.</p>
 </blockquote>
-
 <p>I had tried to tackle the issue of framing the fractal in the window before. I had to consider both the starting position and angle so the path would be centered in the window. An earlier Python drawer did find the rectangular bounding box but couldn't find a nice starting angle.</p>
-
 <p>While I now use a much better algorithm for finding the initial angle, my first attempt consisted of a binary search for the best fitting angle. This worked pretty well but the starting angle would usually be an angle or two off.</p>
-
 <p>At the end of the project, I was happy with the increased speed but I wasn't satisfied with the output format (still a window to screen-shot) and the optimal angle finder.</p>
-
 <h1>Iteration IV: C++</h1>
-
 <p>Junior year of college began and I had a sudden desire to re-write the fractal in C++. I intend for this to be the final language because C++ is the fastest next to C.</p>
-
 <p>This version would have no expenses spared: The fastest algorithm. The best positioning logic. The best output format.</p>
-
 <h2>The Fastest Algorithm</h2>
-
-<p>I haven't figured out a better <code>getTurn()</code>, but it turns out centering the fractal in the screen is a harder problem than generating the fractal in the first place.</p>
-
-<p>To make this drawer run blazingly fast with billions of points, I had to streamline the auto-positioning logic and I got it down to <code>O(n log(n))</code> with the following steps:</p>
-
+<p>I haven't figured out a better <code class="code codespan">getTurn()</code>, but it turns out centering the fractal in the screen is a harder problem than generating the fractal in the first place.</p>
+<p>To make this drawer run blazingly fast with billions of points, I had to streamline the auto-positioning logic and I got it down to <code class="code codespan">O(n log(n))</code> with the following steps:</p>
 <ol>
 <li>Calculate the path given a base shape and the number of iterations.</li>
-<li>Calculate the <a href="https://en.wikipedia.org/wiki/Graham_scan">Convex Hull</a> of the path which makes the algorithm <code>O(n log(n))</code>.</li>
+<li>Calculate the <a href="https://en.wikipedia.org/wiki/Graham_scan" title="Convex Hull">Convex Hull</a> of the path which makes the algorithm <code class="code codespan">O(n log(n))</code>.</li>
 <li>For each segment of the convex hull, assume the segment lies parallel to the bottom of the image. Calculate how well the convex hull fits to the given image size and use the best-fitting segment to calculate the initial angle.</li>
 <li>Calculate the new bounding rectangle and scale + transform the path to fit the image.</li>
 </ol>
-
 <h2>The Best Positioning Logic</h2>
-
 <p>That algorithm is not only fast - it's optimal. It finds the best starting angle for any set of points that best fits (largest area) the fractal to an image. If I give the algorithm different dimensions for the image, it may find a different optimal angle.</p>
-
 <h2>The Best Output Format</h2>
-
 <p>I finally went with outputting to an image instead of opening a window and drawing to the screen as I did with my Python and Java attempts. This meant I could automate fractal-creation and save images without screen shots which reduces human error.</p>
-
-<p>I decided to write to .bmp files because it was the first algorithm I found to easily write images from C++. I then used <a href="https://imagemagick.org/index.php">ImageMagik</a> to convert to .jpg which I used on this site for reduced file size.</p>
-
-<p>Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I <a href="software.html"><em>strongly dislike</em> using libraries</a> so I found copied a line drawing algorithm online. In the future, I might figure out how to draw from .svg or add different line thicknesses.</p>
-
+<p>I decided to write to .bmp files because it was the first algorithm I found to easily write images from C++. I then used <a href="https://imagemagick.org/index.php" title="ImageMagik">ImageMagik</a> to convert to .jpg which I used on this site for reduced file size.</p>
+<p>Writing to an image meant I had to figure out a line drawing algorithm. While I could have found a library, I <a href="software" title="&lt;em&gt;strongly dislike&lt;/em&gt; using libraries"><em>strongly dislike</em> using libraries</a> so I found copied a line drawing algorithm online. In the future, I might figure out how to draw from .svg or add different line thicknesses.</p>
 <h2>Colors</h2>
-
 <p>As I was now making my own images, I decided to experiment with color by cycling through colors while drawing the fractal and adding some groovy erosion patterns that look like topographical maps.</p>
-
 <h2>Results</h2>
-
-<p>You can see a <a href="fractals.html">list of fractal pictures</a> here. I kept the colors simple with a black background and line colors that cycle through primary colors. This color cycling lets you see how the path is drawn.</p>
-
+<p>You can see a <a href="fractals" title="list of fractal pictures">list of fractal pictures</a> here. I kept the colors simple with a black background and line colors that cycle through primary colors. This color cycling lets you see how the path is drawn.</p>
 <h1>Future Work</h1>
-
 <p>At this point I have most of the algorithms in place to make fractals well, but the algorithm isn't accessible (even to me). The easiest solution it to make a web page for previewing and saving fractals. A UI will also make it easier to test out new fractals instead of changing code, re-running the .exe and opening the output picture.</p>
-
 <p>Making a web page is a challenge because I want the page to be responsive while performing complex calculations. Also, in keeping with the spirit of re-inventing the wheel, I want to make a javascript framework from scratch. I'm thinking something like React but better (I know how crazy that sounds). This is a big challenge, and even though I probably won't finish, I'll learn a lot along the way!</p>
+<h2>Update!</h2>
+<p>The web version of the <a href="/fractalGenerator/fractal" title="fractal generator">fractal generator</a> is live!</p>
 </div></body></html>
