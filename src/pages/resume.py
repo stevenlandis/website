@@ -77,11 +77,14 @@ def build(pathGetter):
             ClassDiv('RELEVANT COURSEWORK', 'sectionTitle'),
             DualCol(
                 [
-                    SectionText('Data Structures and Algorithms (CS 16, 24, 32, 130AB)'),
+                    SectionText('Data Structures and Algorithms (CS 130AB)'),
+                    ClassDiv('Data Structures and Algorithms', 'CS 130AB'),
+                    SectionText('Compilers (CS 160, CS 162)'),
                     SectionText('Arduino Programming (ECE 5)'),
                     SectionText('Analog Circuits (ECE 10ABC)')
                 ],
                 [
+                    SectionText('Machine Learning (CS 156AB)'),
                     SectionText('Digital Circuits (CS 40, ECE 15A, 152A)'),
                     SectionText('Verilog (ECE 152A, 156A)'),
                     SectionText('Embedded Systems (ECE 153AB)')

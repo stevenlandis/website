@@ -15,7 +15,7 @@ Paragraph. This is some text.
 
 This is some `inline` code.
 
-Link to [this page](siteElements.html) and some text after.
+Link to [this page](markdownElements.html) and some text after.
 
 ```js
 // this is some javascript
@@ -27,6 +27,7 @@ for (var i = 0; i < 10; i++) {
 And some more code:
 
 ```
+This is some code that's:
 code that is realllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllly long
 ```
 

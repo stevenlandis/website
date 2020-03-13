@@ -98,10 +98,37 @@
 
 <span class="cm">/*</span>
 <span class="cm">OUTPUT</span>
-<span class="cm">&gt; set variables</span>
 <span class="cm">&gt; set up wait function</span>
 <span class="cm">&gt; a and b are both true!</span>
 <span class="cm">&gt; set a1 to true</span>
 <span class="cm">*/</span>
 </code></pre><p>The library automatically figures out that <code class="code codespan">a</code> depends on <code class="code codespan">a1</code> and <code class="code codespan">a2</code>, so changing their values propagates the change up to <code class="code codespan">wait</code>.</p>
+<h1>Update: Mar 12, 2020</h1>
+<p>I have a working version! I made a few changes and the function works as expected, but I'm running into some unexpected issues with integrating <code class="code codespan">run()</code> into a program. More on that later.</p>
+<p>There are some mild changes. First of all, instead of <code class="code codespan">wait</code>, I switch the function to <code class="code codespan">run</code> because it makes a little more sense. I also changed <code class="code codespan">Var</code> to <code class="code codespan">Ref</code>.</p>
+<pre class="code codeblock"><code><span></span><span class="kd">var</span> <span class="nx">a1</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">a2</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="nx">FcnRef</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">a1</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="o">||</span> <span class="nx">a2</span><span class="p">.</span><span class="nx">get</span><span class="p">());</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">Ref</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="nx">run</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="nx">b</span><span class="p">.</span><span class="nx">get</span><span class="p">())</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="p">(</span><span class="s1">&#39;a and b are both true!&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;set up run function&#39;</span><span class="p">);</span>
+
+<span class="nx">print</span><span class="p">(</span><span class="s1">&#39;setting a1 to true&#39;</span><span class="p">);</span>
+<span class="nx">a1</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">OUTPUT</span>
+<span class="cm">&gt; set up wait function</span>
+<span class="cm">&gt; setting a1 to true:</span>
+<span class="cm">&gt; a and b are both true!</span>
+<span class="cm">*/</span>
+</code></pre><p>And there it is. In plain javascript with a minimal syntax, this script is an efficient implementation of dependent variables. This setup means it is possible to use variables with confidence.</p>
+<p>One of the main issues with programming is duplication of source of truth. Dependent programming eliminates this issue because variables are recalculated whenever their value changes. For example, I can confidently use <code class="code codespan">a</code> without worrying about when its value changes. I don't need to re-run my check when <code class="code codespan">a1</code> and <code class="code codespan">a2</code> change because the library takes care of that.</p>
+<p>It's all sunshine and rainbows from here on out, right? Well, it turns out that integrating <code class="code codespan">run</code> into other applications can be a little tricky. For one, it would be nice to cache changed variables until they can be written.</p>
 </div></body></html>

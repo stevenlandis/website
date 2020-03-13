@@ -216,5 +216,8 @@ class LinkRule(bld.Rule):
         print(f'linking {self.outputs[0].name}')
 
         links = getLinks(self.inputs[0])
-        
+
         self.outputs[0].write('\n'.join(links))
+
+if __name__ == '__main__':
+    main()

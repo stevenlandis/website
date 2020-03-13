@@ -129,7 +129,6 @@ print('set a1 to true');
 
 /*
 OUTPUT
-> set variables
 > set up wait function
 > a and b are both true!
 > set a1 to true
@@ -137,3 +136,40 @@ OUTPUT
 ```
 
 The library automatically figures out that `a` depends on `a1` and `a2`, so changing their values propagates the change up to `wait`.
+
+# Update: Mar 12, 2020
+
+I have a working version! I made a few changes and the function works as expected, but I'm running into some unexpected issues with integrating `run()` into a program. More on that later.
+
+There are some mild changes. First of all, instead of `wait`, I switch the function to `run` because it makes a little more sense. I also changed `Var` to `Ref`.
+
+```js
+var a1 = Ref(false);
+var a2 = Ref(false);
+
+var a = FcnRef(() => a1.get() || a2.get());
+var b = Ref(true);
+
+run(() => {
+  if (a.get() && b.get()) {
+    print('a and b are both true!');
+  }
+});
+print('set up run function');
+
+print('setting a1 to true');
+a1.set(true);
+
+/*
+OUTPUT
+> set up wait function
+> setting a1 to true:
+> a and b are both true!
+*/
+```
+
+And there it is. In plain javascript with a minimal syntax, this script is an efficient implementation of dependent variables. This setup means it is possible to use variables with confidence.
+
+One of the main issues with programming is duplication of source of truth. Dependent programming eliminates this issue because variables are recalculated whenever their value changes. For example, I can confidently use `a` without worrying about when its value changes. I don't need to re-run my check when `a1` and `a2` change because the library takes care of that.
+
+It's all sunshine and rainbows from here on out, right? Well, it turns out that integrating `run` into other applications can be a little tricky. For one, it would be nice to cache changed variables until they can be written.
