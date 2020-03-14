@@ -35,6 +35,10 @@ def getResDir():
     # posts summary page
     PostsRule(bld.DiskDir('src/pages/posts'), buildDir.getFile('postsList.html'), '')
 
+    bld.copyDir(
+        bld.DiskDir('C:/Users/steven/Google Drive/core/Programming/encryptWebsite/out'),
+        buildDir.getDir('secret'))
+
     return resDir
 
 def getPosts():
