@@ -2,50 +2,98 @@ import re
 import mistune
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
-from pygments.formatters import html
+from pygments.formatters import HtmlFormatter
 import os.path
+from src.parts.Elem import Elem
+from src.parts.parseHTML import parseHTML
+from os import getcwd
+from os.path import abspath, commonprefix, relpath
+import bld
 
-class HighlightRenderer(mistune.Renderer):
-  def block_code(self, code, lang=None):
-    if lang == None:
-      return (
-        '<pre class="code codeblock"><code>' +
-        mistune.escape(code) +
-        '</code></pre>'
-      )
-    lexer = get_lexer_by_name(lang, stripall=True)
-    formatter = html.HtmlFormatter()
-    fCode = highlight(code, lexer, formatter)
-    fCode = fCode[len('<div class="highlight"><pre>'):-len('</pre></div>')-1]
-    return (
-        '<pre class="code codeblock"><code>' +
-        fCode +
-        '</code></pre>'
-      )
+def escape_html(txt):
+  if txt == None: return None
+  return mistune.escape_html(txt)
+
+class CustomRenderer(mistune.AstRenderer):
+  def text(self, text):
+    return escape_html(text)
+
+  def link(self, link, children=None, title=None):
+    title = escape_html(title)
+    return Elem('a', {'href': link,}, children)
+
+  def image(self, src, alt=None, title=None):
+    alt = escape_html(alt)
+    title = escape_html(title)
+    return Elem('img', {'src': src, 'alt': alt, 'title': title})
+
+  def emphasis(self, text):
+    return Elem('em', {}, text)
+
+  def strong(self, text):
+    return Elem('strong', {}, text)
+
   def codespan(self, text):
-    return (
-      '<code class="code codespan">' +
-      mistune.escape(text) +
-      '</code>'
-    )
-  def link(self, link, text=None, title=None):
-    if not link.startswith('http'):
-      tempLink, ext = os.path.splitext(link)
-      if ext == '.html': link = tempLink
+    return Elem('code', {}, escape_html(text))
 
-    if title == None and text == None:
-      text = link
-    elif text == None:
-      text = title
+  def linebreak(self):
+    return Elem('br')
 
-    s = '<a href="' + link + '"'
-    if title:
-        s += ' title="' + mistune.escape(title) + '"'
-    return s + '>' + text + '</a>'
+  def inline_html(self, html):
+    return html
 
-convert = mistune.Markdown(renderer=HighlightRenderer())
+  def paragraph(self, text):
+    return Elem('p', {}, text)
+
+  def heading(self, children, level):
+    if level == 1:
+      img = Elem('img', {'src': '/svg/logo.svg', 'class': 'h1-img'})
+      return Elem(f'h{level}', {}, [img, children])
+    return Elem(f'h{level}', {}, children)
+
+  def newline(self):
+    return ''
+
+  def thematic_break(self):
+    return Elem('hr')
+
+  def block_text(self, text):
+    return text
+
+  def block_code(self, code, lang='text'):
+    try:
+      lexer = get_lexer_by_name(lang)
+    except:
+      lexer = get_lexer_by_name('text')
+    formatter = HtmlFormatter()
+    htmlStr = highlight(code, lexer, formatter)
+    return parseHTML(htmlStr)
+    # return highlight(code, lexer, HtmlFormatter())
+    #   return code
+    # except:
+    #   code = escape_html(code)
+    # return Elem('div', {'class': 'codeblock'}, Elem('pre', {'class': 'code'}, code))
+    # return Elem('pre', {'class': 'codeblock'}, Elem('code', {}, escape_html(code)))
+
+  def block_quote(self, text):
+    return Elem('blockquote', {}, text)
+
+  def block_html(self, children):
+    return children
+
+  def list(self, children, ordered, level, start=None):
+    if ordered:
+      if start: return Elem('ol', {'start': str(start)}, children)
+      else: return Elem('ol', {}, children)
+    else:
+      return Elem('ul', {}, children)
+
+  def list_item(self, children, level):
+    return Elem('li', {}, children)
+
+convert = mistune.Markdown(renderer=CustomRenderer())
 def Markdown(txt=None, path=None):
-    if path != None:
-        with open(path, 'r') as f:
-            txt = f.read()
-    return convert(txt)
+  if path != None:
+    with open(path, 'r') as f:
+      txt = f.read()
+  return convert(txt)

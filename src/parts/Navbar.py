@@ -3,23 +3,21 @@ from src.parts.Elem import Elem
 def NavBarLink(name, href, first=False):
     attrs = {}
     if not first: attrs['style'] = 'margin-left:3em;'
-    if attrs == None: attrs = {}
     attrs['href'] = href
-    return Elem('span', Elem('a', name, attrs=attrs))
+    return Elem('span', {}, Elem('a', attrs, name))
 
-def Navbar(pathGetter, links=None):
+def Navbar(links=None):
     if links == None:
         links = [
             ('Home', '/'),
-            ('Resume', 'resume'),
-            ('Posts', 'postsList'),
-            ('Fractal Generator', 'fractalGenerator/fractal')
+            ('Resume', '/resume'),
+            ('Posts', '/posts/list'),
+            ('Fractal Generator', '/fractal')
         ]
-        return Navbar(pathGetter, links)
+        return Navbar(links)
 
     linkElems = []
-    for i, (label, name) in enumerate(links):
-        href = pathGetter.getPage(name)
-        linkElems.append(NavBarLink(label, href, i == 0))
+    for i, (label, link) in enumerate(links):
+        linkElems.append(NavBarLink(label, link, i == 0))
 
-    return Elem('div', linkElems, attrs={'class': 'navbar'})
+    return Elem('div', {'class': 'navbar'}, linkElems)

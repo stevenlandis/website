@@ -1,0 +1,177 @@
+{
+  "name": "Steven Landis",
+  "email": "[FIRST][LAST] at comcast dot net",
+  "location": "Santa Barbara, CA",
+  "education": {
+    "name": "University of California Santa Barbara",
+    "major": "Computer Engineering",
+    "graduation": "June 2020",
+    "GPA": 3.96,
+    "coursework": [
+      {
+        "name": "Data Structures and Algorithms",
+        "code": "CS 130AB"
+      },
+      {
+        "name": "Compilers",
+        "code": "CS 160, 162"
+      },
+      {
+        "name": "Arduino Programming",
+        "code": "ECE 5"
+      },
+      {
+        "name": "Analog Circuits",
+        "code": "ECE 10ABC"
+      },
+      {
+        "name": "Machine Learning",
+        "code": "ECE 156AB"
+      },
+      {
+        "name": "Digital Cirtuits",
+        "code": "CS 40, ECE 15A, ECE 152AB"
+      },
+      {
+        "name": "Verilog / Processor Design",
+        "code": "ECE 152AB, 156AB"
+      },
+      {
+        "name": "Embedded Systems",
+        "code": "ECE 153AB"
+      }
+    ]
+  },
+  "experiences": [
+    {
+      "name": "CS Undergrad Research in Static Analysis",
+      "location": "UCSB CS 196",
+      "date": "Spring Quarter 2020",
+      "languages": ["racket", "rosette", "llvm"],
+      "background": [
+        "Many languages such as C, C++ and Rust compile to llvm intermetiate representation",
+        "The Serval library allows for symbolic evaluation of a wide range of assembly formats"
+      ],
+      "accomplishments": [
+        "Extended Serval library to calculate instruction count of a function as a function of its inputs.",
+        "Leveraged rosette to minimize and maximize symbolic expressions using an SMT solver.",
+        "Solved for conflicting keys when maximizing instruction count of a hash function",
+        "Solved for sorted list when minimizing instruction count of a sorting function"
+      ]
+    },
+    {
+      "name": "Ridgeline Apps Internship",
+      "location": "Incline Village, NV",
+      "role": "Software Engineering Intern",
+      "date": "Summer 2019",
+      "languages": ["Typescript", "React"],
+      "accomplishments": [
+        "Wrote a charting library from the ground up and integrated it into live application.",
+        "Starting with no prior experience, became go-to person for questions about testing, React and Typescript in about 5 weeks",
+        "Used developer feedback to streamline chart-creation functions and make library easy to modify",
+        "Wrote write unit and integration tests to achieve 99% test coverage."
+      ]
+    },
+    {
+      "name": "UCSB Chemical Engineering Research Assistant",
+      "role": "Software Engineer",
+      "date": "Oct 2017 - June 2020",
+      "location": "UCSB, Doherty Lab",
+      "languages": ["Matlab"],
+      "accomplishments": [
+        "Led redesign of crystal growth application.",
+        "Leveraged code profiler to speed make algorithms 2 to 10 times faster.",
+        "Explained application to users over Zoom",
+        "Wrote extensive documentation based on user feedback.",
+        "Wrote a paper on novel algorithms I developed to simulate and visualize crystal growth mechanisms.",
+        "Hired and trained another student to continue development when I leave.",
+        "Quickly learned MATLAB and cutting-edge crystallography research despite no prior experience",
+        "Taught coworkers Git and managed Github repository.",
+        "Added regression tests for crystal shape predictions."
+      ],
+      "github contributions": {
+        "additions": "146K",
+        "deletions": "42K"
+      }
+    },
+    {
+      "name": "UCSB Computer Engineering Capstone",
+      "location": "UCSB and Alcon Eye Care",
+      "date": "Sep 2019 - June 2020",
+      "languages": ["C++", "Python"],
+      "accomplishments": [
+        "Designed detection system that enables a robotic arm to avoid obstacles in an operating room.",
+        "Leveraged 4x4 matrices to calculate positions along the arm.",
+        "Researched for parts such as optical sensors and processors and finished project using only 60% of budget.",
+        "Created interface so operators can safely and easily move the arm."
+      ]
+    },
+    {
+      "name": "2-Pivot Drawing Arm Project",
+      "location": "ECE 5",
+      "date": "March to April 2017",
+      "languages": ["Python", "C"],
+      "accomplishments": [
+        "Worked in team of 3 to design, manufacture and program a mechanical arm that draws pictures with a pen",
+        "Designed and 3D printed pen holder using SolidWorks",
+        "Operated metal fabrication tools (lathe, drill press, tapping machine, band saw) to build arm from scratch",
+        "Programmed Python sketching program for computer",
+        "Wrote C program for Arduino to control 2 stepper motors and 1 servo motor to draw picture",
+        "Debugged serial connection between computer and Arduino"
+      ]
+    },
+    {
+      "name": "IEEE Natcar Competition",
+      "location": "UCSB IEEE club",
+      "date": "May 2019",
+      "languages": ["Python", "C++"],
+      "accomplishments": [
+        "Led software development on team of 5 people to control a small autonomous car around a track",
+        "Implemented image processing to capture track information from a picture",
+        "Part of UCSB's first Natcar team in 4 years to complete complete a lap around the track.",
+        "Wrote efficient cyclic buffer for taking quick averaged measurements with Arduino."
+      ],
+      "race video": "https://www.youtube.com/watch?v=WXWqOkHU_tM"
+    },
+    {
+      "name": "IEEE Extreme Coding Competition",
+      "hidden": true,
+      "location": "UCSB IEEE club",
+      "date": "Oct 2017 for 24 hours",
+      "languages": ["C++", "Javascript"],
+      "accomplishments": [
+        "Used data structures (arrays, stacks, trees) to model and solve challenging problems",
+        "Reduced computational complexity to reduce runtime within time limit",
+        "Ranked in top 7% of competitors (international college and graduate students)"
+      ]
+    }
+  ],
+  "languages": [
+    "Typescript React",
+    "MATLAB",
+    "Python",
+    "C++ and C",
+    "Javascript",
+    "BASH / Linux Terminal",
+    "Verilog",
+    "TI-BASIC"
+  ],
+  "papers": [
+    {
+      "authors": ["S. Landis", "Y. Zhao", "M.F. Doherty"],
+      "title":  "Digital Design of Crystalline Solids",
+      "journal": "Computers & Chem. Engng",
+      "volume": "133",
+      "page": "106637",
+      "date": "2020"
+    },
+    {
+      "authors": ["Y. Zhao", "C. J. Tilbury", "S. Landis", "Y. Sun", "J. Li", "P. Zhu", "M. F. Doherty"],
+      "title":  "A New Software Framework for Implementing Crystal Growth Models to Materials of Any Crystallographic Complexity",
+      "journal": "Crystal Growth & Design",
+      "volume": "20",
+      "page": "2885-2892",
+      "date": "2020"
+    }
+  ]
+}

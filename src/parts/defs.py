@@ -16,46 +16,46 @@ def Page(title, head, body):
     elem = Elem('html', [head, body], attrs={'lang': 'en'})
     return '<!DOCTYPE html>' + elem
 
-def Favicon(size, builder):
+def Favicon(size):
     attrs = {
         'rel': 'icon',
         'type': 'image',
-        'href': builder.getRec(f'favicon/{size}.png'),
+        'href': f'favicon/{size}.png',
         'sizes': size
     }
     return SingleElem('link', attrs)
 
-def StyleSheet(path, builder):
+def StyleSheet(path):
     attrs = {
         'rel': 'stylesheet',
-        'href': builder.getRec(path)
+        'href': path
     }
     return SingleElem('link', attrs)
 
-def Script(path, builder):
+def Script(path):
     attrs = {
         'type': 'text/javascript',
-        'src': builder.getScript(path)
+        'src': path
     }
     return Elem('script', '', attrs=attrs)
 
 def Title(title):
     return Elem('div', title, attrs={'class': 'title'})
 
-def MainPage(title, builder, content):
+def MainPage(title, content):
     head = [
         '<meta charset="UTF-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
-        Favicon('16x16', builder),
-        Favicon('32x32', builder),
-        Favicon('96x96', builder),
-        StyleSheet('styles.css', builder),
-        StyleSheet('highlight.css', builder)
+        Favicon('16x16'),
+        Favicon('32x32'),
+        Favicon('96x96'),
+        StyleSheet('styles.css'),
+        StyleSheet('highlight.css')
     ]
 
     body = Elem('div', [
         Title(title),
-        Navbar(builder),
+        Navbar(),
         content
     ], attrs={'class': 'main'})
 
