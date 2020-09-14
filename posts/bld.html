@@ -1,57 +1,16 @@
-<!DOCTYPE html><html lang="en"><head><title>bld: Replacing Make</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="icon" type="image" href="../rec/favicon/16x16.png" sizes="16x16"/><link rel="icon" type="image" href="../rec/favicon/32x32.png" sizes="32x32"/><link rel="icon" type="image" href="../rec/favicon/96x96.png" sizes="96x96"/><link rel="stylesheet" href="../rec/styles.css"/><link rel="stylesheet" href="../rec/highlight.css"/></head><body><div class="main"><div class="title">bld: Replacing Make</div><div class="navbar"><span><a href="..//">Home</a></span><span><a style="margin-left:3em;" href="../resume">Resume</a></span><span><a style="margin-left:3em;" href="../postsList">Posts</a></span><span><a style="margin-left:3em;" href="../fractalGenerator/fractal">Fractal Generator</a></span></div><h1>Make is amazing</h1>
-<p>Seriously. Make lets you build files incrementally while expressing complex build rules with an efficient syntax. It also lets you define custom commonly-used commands for a project which makes building and cleaning much easier.</p>
-<p>The only downside is that Make is not a complete scripting language. I'm a pretty lazy person, so it was hard for me to learn the syntax of advanced rules and I ran into a few cases where I wanted to build my project in a way that Make didn't allow.</p>
-<p>This is my motivation for bld. I want it to be a library that makes it easy to write files to build a project in python. Python is a great scripting languages with lots of libraries and it has a very clear syntax which makes it ideal for connecting different commands together into a build system.</p>
-<h1>The Test</h1>
-<p>To test how well my building library works, I made a static website generator and tested how easy it was to implement building features. If you are reading this website, then the test worked!</p>
-<h2>Goals</h2>
-<ul>
-<li>Write a <code class="code codespan">build.py</code> file that creates a website.</li>
-<li>Get incremental builds to work.</li>
-<li>Get live building to work.</li>
-</ul>
-<p>I'm currently able to build a website, but incremental builds don't work. It turns out that python files can import other python files which means the incremental builder needs to read files to find dependencies. This should be a simple regex to extract imported files but it will make the builder much slower because it has to read through a lot of python files.</p>
-<p>There are three ways around this:</p>
-<ol>
-<li><p>Get the build file to generate a static 'plan' for building the current project. It will be expensive to make this plan but running the plan is cheap. This assumes that most file changes only involve changing files and not creating new files or changing imports. I also have to re-generate the plan manually.</p>
-</li>
-<li><p>Get live building to work. This is the best solution but I really don't want to deal with watching a file. Yet. It is an eventual goal and will make my life a lot easier but it is a complex addition to this library and I need to think about how it will work.</p>
-</li>
-<li><p>Each file has a 'import' file in a temp directory that stores it's imports. This seems like a good neutral option because it makes it possible to do make-style incremental builds and keeps the expense of each run low. It does add a little more memory to the project.</p>
-</li>
-</ol>
-<h1>The Building Blocks: Navigating the File System</h1>
-<p>A key part of writing a build system is finding the files to build. For this website, I have a folder <code class="code codespan">pages/</code> with a bunch of files that define a page. Some pages that need custom control are a python file and other pages, such as this one, are a single markdown file with some meta-data.</p>
-<p>This means bld.py has to recursively look through the contents of <code class="code codespan">pages/</code>. When it finds a python file, it runs that python file and saves the resulting string as an html file. When it finds a markdown file, it parses that file as markdown, highlights the corresponding code sections and saves that as html.</p>
-<h2>Virtual And Disk Files and Directories</h2>
-<p>This library provides all that functionality using two base objects, <code class="code codespan">DiskDir / DiskFile</code> and <code class="code codespan">VirDir / VirFile</code>. Disk objects are files and directories that actually exist on the disk and Vir objects are virtual files and directories that will be built (placed) during the build process.</p>
-<p>These disk and virtual file objects make it easier to navigate and manipulate files and directories.</p>
-<p>It all starts with getting the <code class="code codespan">pages/</code> directory:</p>
-<pre class="code codeblock"><code><span></span><span class="n">pageDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">DiskDir</span><span class="p">(</span><span class="s1">&#39;src/pages&#39;</span><span class="p">)</span>
-</code></pre><p>The output will be stored in the <code class="code codespan">build/</code> directory and this is represented as a virtual directory that will be populated with files during the build process:</p>
-<pre class="code codeblock"><code><span></span><span class="n">buildDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirDir</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">)</span>
-</code></pre><p>At this point, if I wanted to write <code class="code codespan">'Hello World'</code> to <code class="code codespan">build\test.txt</code>, I could use the following code:</p>
-<pre class="code codeblock"><code><span></span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+<!doctype html><html><head><meta charset="UTF-8"><meta charset="UTF-8"><meta name="viewport" content="width=device-width" initial-scale="1.0"><link rel="icon" type="image" href="/favicon/16x16.png" sizes="16x16"><link rel="icon" type="image" href="/favicon/32x32.png" sizes="32x32"><link rel="icon" type="image" href="/favicon/96x96.png" sizes="96x96"><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/css/highlight.css"><title>bld: Replacing Make</title></head><body><div class="title">bld: Replacing Make</div><div class="main"><div class="navbar"><span><a href="/">Home</a></span><span><a style="margin-left:3em;" href="/resume">Resume</a></span><span><a style="margin-left:3em;" href="/posts/list">Posts</a></span><span><a style="margin-left:3em;" href="/fractal">Fractal Generator</a></span></div><h1><img src="/svg/logo.svg" class="h1-img">Make is amazing</h1><p>Seriously. Make lets you build files incrementally while expressing complex build rules with an efficient syntax. It also lets you define custom commonly-used commands for a project which makes building and cleaning much easier.</p><p>The only downside is that Make is not a complete scripting language. I'm a pretty lazy person, so it was hard for me to learn the syntax of advanced rules and I ran into a few cases where I wanted to build my project in a way that Make didn't allow.</p><p>This is my motivation for bld. I want it to be a library that makes it easy to write files to build a project in python. Python is a great scripting languages with lots of libraries and it has a very clear syntax which makes it ideal for connecting different commands together into a build system.</p><h1><img src="/svg/logo.svg" class="h1-img">The Test</h1><p>To test how well my building library works, I made a static website generator and tested how easy it was to implement building features. If you are reading this website, then the test worked!</p><h2>Goals</h2><ul><li>Write a <code>build.py</code> file that creates a website.</li><li>Get incremental builds to work.</li><li>Get live building to work.</li></ul><p>I'm currently able to build a website, but incremental builds don't work. It turns out that python files can import other python files which means the incremental builder needs to read files to find dependencies. This should be a simple regex to extract imported files but it will make the builder much slower because it has to read through a lot of python files.</p><p>There are three ways around this:</p><ol><li><p>Get the build file to generate a static 'plan' for building the current project. It will be expensive to make this plan but running the plan is cheap. This assumes that most file changes only involve changing files and not creating new files or changing imports. I also have to re-generate the plan manually.</p></li><li><p>Get live building to work. This is the best solution but I really don't want to deal with watching a file. Yet. It is an eventual goal and will make my life a lot easier but it is a complex addition to this library and I need to think about how it will work.</p></li><li><p>Each file has a 'import' file in a temp directory that stores it's imports. This seems like a good neutral option because it makes it possible to do make-style incremental builds and keeps the expense of each run low. It does add a little more memory to the project.</p></li></ol><h1><img src="/svg/logo.svg" class="h1-img">The Building Blocks: Navigating the File System</h1><p>A key part of writing a build system is finding the files to build. For this website, I have a folder <code>pages/</code> with a bunch of files that define a page. Some pages that need custom control are a python file and other pages, such as this one, are a single markdown file with some meta-data.</p><p>This means bld.py has to recursively look through the contents of <code>pages/</code>. When it finds a python file, it runs that python file and saves the resulting string as an html file. When it finds a markdown file, it parses that file as markdown, highlights the corresponding code sections and saves that as html.</p><h2>Virtual And Disk Files and Directories</h2><p>This library provides all that functionality using two base objects, <code>DiskDir / DiskFile</code> and <code>VirDir / VirFile</code>. Disk objects are files and directories that actually exist on the disk and Vir objects are virtual files and directories that will be built (placed) during the build process.</p><p>These disk and virtual file objects make it easier to navigate and manipulate files and directories.</p><p>It all starts with getting the <code>pages/</code> directory:</p><div class="highlight"><pre><span></span><span class="n">pageDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">DiskDir</span><span class="p">(</span><span class="s1">&#x27;src/pages&#x27;</span><span class="p">)</span>
+</pre></div><p>The output will be stored in the <code>build/</code> directory and this is represented as a virtual directory that will be populated with files during the build process:</p><div class="highlight"><pre><span></span><span class="n">buildDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirDir</span><span class="p">(</span><span class="s1">&#x27;build&#x27;</span><span class="p">)</span>
+</pre></div><p>At this point, if I wanted to write <code>'Hello World'</code> to <code>build\test.txt</code>, I could use the following code:</p><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s1">&#x27;Hello World&#x27;</span>
 
 <span class="c1"># testFile is a VirFile</span>
-<span class="n">testFile</span> <span class="o">=</span> <span class="n">buildDir</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="s1">&#39;test.txt&#39;</span><span class="p">)</span>
+<span class="n">testFile</span> <span class="o">=</span> <span class="n">buildDir</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="s1">&#x27;test.txt&#x27;</span><span class="p">)</span>
 
 <span class="c1"># place the output directory</span>
-<span class="n">buildDir</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">buildDir</span><span class="o">.</span><span class="n">place</span><span class="p">(</span><span class="s1">&#x27;.&#x27;</span><span class="p">)</span>
 
 <span class="c1"># write the file</span>
 <span class="n">testFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre><p>I could then use this structure to build my whole project and I would be done. However, I only want to build the bare minimum number of files each time and I don't want to re-build <code class="code codespan">test.txt</code> if its contents don't change.</p>
-<h2>Rules</h2>
-<p>This is where rules come in. <code class="code codespan">Rule</code> is a class that can be sub-classed to create custom rules for building files. A rule has three parts:</p>
-<ol>
-<li>Input files</li>
-<li>Output files</li>
-<li>Some function to build the output files from input files</li>
-</ol>
-<p>Because a rule declares which files it depends on before running, <code class="code codespan">bld</code> checks the write time of the input files before running each rule which means <strong>each rule runs only when it needs to run</strong>.</p>
-<p>In the previous example, I could replace the code with a rule for writing <code class="code codespan">'Hello World'</code> with a rule:</p>
-<pre class="code codeblock"><code><span></span><span class="k">class</span> <span class="nc">HelloWorldRule</span><span class="p">(</span><span class="n">bld</span><span class="o">.</span><span class="n">Rule</span><span class="p">):</span>
+</pre></div><p>I could then use this structure to build my whole project and I would be done. However, I only want to build the bare minimum number of files each time and I don't want to re-build <code>test.txt</code> if its contents don't change.</p><h2>Rules</h2><p>This is where rules come in. <code>Rule</code> is a class that can be sub-classed to create custom rules for building files. A rule has three parts:</p><ol><li>Input files</li><li>Output files</li><li>Some function to build the output files from input files</li></ol><p>Because a rule declares which files it depends on before running, <code>bld</code> checks the write time of the input files before running each rule which means <strong>each rule runs only when it needs to run</strong>.</p><p>In the previous example, I could replace the code with a rule for writing <code>'Hello World'</code> with a rule:</p><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloWorldRule</span><span class="p">(</span><span class="n">bld</span><span class="o">.</span><span class="n">Rule</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outFile</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
@@ -59,33 +18,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">addOut</span><span class="p">(</span><span class="n">outFile</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># print some text so we can see if the rule runs</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Writing HelloWorld to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#x27;Writing HelloWorld to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#x27;</span><span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#x27;Hello World&#x27;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</code></pre><p>And call it like:</p>
-<pre class="code codeblock"><code><span></span><span class="n">buildDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirDir</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">)</span>
-<span class="n">testFile</span> <span class="o">=</span> <span class="n">buildDir</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="s1">&#39;test.txt&#39;</span><span class="p">)</span>
+</pre></div><p>And call it like:</p><div class="highlight"><pre><span></span><span class="n">buildDir</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirDir</span><span class="p">(</span><span class="s1">&#x27;build&#x27;</span><span class="p">)</span>
+<span class="n">testFile</span> <span class="o">=</span> <span class="n">buildDir</span><span class="o">.</span><span class="n">getFile</span><span class="p">(</span><span class="s1">&#x27;test.txt&#x27;</span><span class="p">)</span>
 <span class="n">HelloWorldRule</span><span class="p">(</span><span class="n">testFile</span><span class="p">)</span>
 
-<span class="n">buildDir</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="c1"># automatically runs HelloWorldRule the first time</span>
-</code></pre><p>When I start out, my file structure looks like this:</p>
-<pre class="code codeblock"><code>./
-    build.py</code></pre><p>I then run <code class="code codespan">build</code> for the first time</p>
-<pre class="code codeblock"><code>&gt;&gt;&gt; build
+<span class="n">buildDir</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#x27;.&#x27;</span><span class="p">)</span> <span class="c1"># automatically runs HelloWorldRule the first time</span>
+</pre></div><p>When I start out, my file structure looks like this:</p><div class="highlight"><pre><span></span>./
+    build.py
+</pre></div><p>I then run <code>build</code> for the first time</p><div class="highlight"><pre><span></span>&gt;&gt;&gt; build
 Writing HelloWorld to test.txt
-&gt;&gt;&gt;</code></pre><p>Then, my file structure looks like this:</p>
-<pre class="code codeblock"><code>./
+&gt;&gt;&gt;
+</pre></div><p>Then, my file structure looks like this:</p><div class="highlight"><pre><span></span>./
     build.py
     build/
-        test.txt</code></pre><p>It even made the folder <code class="code codespan">build/</code> so <code class="code codespan">text.txt</code> has a place to live!</p>
-<p>When I run <code class="code codespan">build</code> again, the real magic happens:</p>
-<pre class="code codeblock"><code>&gt;&gt;&gt; build
-&gt;&gt;&gt;</code></pre><p>Nothing! That's right, <code class="code codespan">Rule</code> automatically detects that <code class="code codespan">test.txt</code> already exists and doesn't run the rule again.</p>
-<h2>Rule Inputs</h2>
-<p>That's a cool example, but what if I want a file to depend on another file? This is where the input part of rules comes into play.</p>
-<p>The simplest rule that takes another file as input is the copy rule which is included in <code class="code codespan">bld</code>, but I'll make a copy here:</p>
-<pre class="code codeblock"><code><span></span><span class="k">class</span> <span class="nc">CopyRule</span><span class="p">(</span><span class="n">bld</span><span class="o">.</span><span class="n">Rule</span><span class="p">):</span>
+        test.txt
+</pre></div><p>It even made the folder <code>build/</code> so <code>text.txt</code> has a place to live!</p><p>When I run <code>build</code> again, the real magic happens:</p><div class="highlight"><pre><span></span>&gt;&gt;&gt; build
+&gt;&gt;&gt;
+</pre></div><p>Nothing! That's right, <code>Rule</code> automatically detects that <code>test.txt</code> already exists and doesn't run the rule again.</p><h2>Rule Inputs</h2><p>That's a cool example, but what if I want a file to depend on another file? This is where the input part of rules comes into play.</p><p>The simplest rule that takes another file as input is the copy rule which is included in <code>bld</code>, but I'll make a copy here:</p><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CopyRule</span><span class="p">(</span><span class="n">bld</span><span class="o">.</span><span class="n">Rule</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inFile</span><span class="p">,</span> <span class="n">outFile</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">addIn</span><span class="p">(</span><span class="n">inFile</span><span class="p">)</span>
@@ -94,19 +47,18 @@ Writing HelloWorld to test.txt
         <span class="p">[</span><span class="n">inFile</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span>
         <span class="p">[</span><span class="n">outFile</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span>
         <span class="n">outFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">inFile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
-</code></pre><p>Yep, it's really that simple. I can use this rule to build the project as follows:</p>
-<pre class="code codeblock"><code>Before:
+</pre></div><p>Yep, it's really that simple. I can use this rule to build the project as follows:</p><div class="highlight"><pre><span></span>Before:
 ./
     copyMe.txt
 
 After:
 ./
     copyMe.txt
-    copiedMe.txt</code></pre><p>And the <code class="code codespan">build.py</code> file:</p>
-<pre class="code codeblock"><code><span></span><span class="n">copyMe</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">DiskFile</span><span class="p">(</span><span class="s1">&#39;copyMe.txt&#39;</span><span class="p">)</span>
-<span class="n">copiedMe</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirFile</span><span class="p">(</span><span class="s1">&#39;copiedMe.txt&#39;</span><span class="p">)</span>
+    copiedMe.txt
+</pre></div><p>And the <code>build.py</code> file:</p><div class="highlight"><pre><span></span><span class="n">copyMe</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">DiskFile</span><span class="p">(</span><span class="s1">&#x27;copyMe.txt&#x27;</span><span class="p">)</span>
+<span class="n">copiedMe</span> <span class="o">=</span> <span class="n">bld</span><span class="o">.</span><span class="n">VirFile</span><span class="p">(</span><span class="s1">&#x27;copiedMe.txt&#x27;</span><span class="p">)</span>
 <span class="n">CopyRule</span><span class="p">(</span><span class="n">copyMe</span><span class="p">,</span> <span class="n">copiedMe</span><span class="p">)</span>
 
 <span class="c1"># run the rule</span>
-<span class="n">copiedMe</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
-</code></pre></div></body></html>
+<span class="n">copiedMe</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#x27;.&#x27;</span><span class="p">)</span>
+</pre></div></div></body></html>

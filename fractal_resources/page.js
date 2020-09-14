@@ -4,10 +4,10 @@ var data = {
   width: '700',
   height: '500',
   fractalString: '1 90 1',
-  iterations: '1',
+  iterations: '14',
   mirrored: true,
   backgroundColor: 0,
-  lineColor: 1,
+  lineColor: 6,
   message: 'Idle',
 };
 
@@ -251,6 +251,7 @@ function render() {
 
   var content = [];
 
+  content.push(Elem('div', Elem('a', 'Back to home', {href: '/'}), {style: {paddingBottom: '1em'}}));
   content.push(LabeledInput('Fractal String: ', 'fractalString'));
   content.push(LabeledInt('Iterations: ', 'iterations'));
   content.push(LabeledInput('width: ', 'width'));
@@ -292,7 +293,7 @@ function render() {
 
     // use web worker to do fractal calculation
     if (worker !== undefined) worker.terminate();
-    worker = new Worker('fractalWorker.js');
+    worker = new Worker('fractal_resources/fractalWorker.js');
     ctx.beginPath();
     ctx.rect(0,0,processedData.width, processedData.height);
     ctx.fillStyle = backgroundColors[data.backgroundColor];
@@ -330,7 +331,7 @@ function render() {
         message.merge(document.getElementById('message'));
         break;
       }
-      
+
     });
     worker.addEventListener('messageerror', event => {
       print('message error:');

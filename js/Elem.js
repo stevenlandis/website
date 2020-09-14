@@ -68,6 +68,9 @@ function mergeAttrs(dest, attrs) {
   if (attrs.id !== undefined) {
     dest.id = attrs.id;
   }
+  if (attrs.href !== undefined) {
+    dest.href = attrs.href;
+  }
 
   // for (const key of Object.keys(dest.style)) {
   //   if (attrs.style[key] === undefined && dest.style[key] !== '') {
