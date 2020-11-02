@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="UTF-8"><meta charset="UTF-8"><meta name="viewport" content="width=device-width" initial-scale="1.0"><link rel="icon" type="image" href="/favicon/16x16.png" sizes="16x16"><link rel="icon" type="image" href="/favicon/32x32.png" sizes="32x32"><link rel="icon" type="image" href="/favicon/96x96.png" sizes="96x96"><link rel="stylesheet" href="/css/styles.css"><link rel="stylesheet" href="/css/highlight.css"><title>Cool Function Idea</title></head><body><div class="title">Cool Function Idea</div><div class="main"><div class="navbar"><span><a href="/">Home</a></span><span><a style="margin-left:3em;" href="/resume">Resume</a></span><span><a style="margin-left:3em;" href="/posts/list">Posts</a></span><span><a style="margin-left:3em;" href="/fractal">Fractal Generator</a></span><span><a style="margin-left:3em;" href="/webapp/index">Webapp</a></span></div><h1><img src="/svg/logo.svg" class="h1-img">Cool Function Idea</h1><p>Alright, is mostly for my own brainstorming.</p><p>So I had an idea to make functions with extreme overloading capabilities. Like for classes, instead of calling a constructor, you would call <code>init(classType)</code> and the compiler would figure out which class to make based on the class type. But like there would be a bunch of definitions for <code>init</code>, one for each class and the compiler would figure out which to call based on the arguments.</p><p>Yeah, that's it in a sentence: Figure out which function definition to call based on the arguments.</p><p>This solves one of my pet peeves with C++, where you have to define a 'friend' function when overloading addition or other operators. It would be so much easier to make a new object like:</p><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyAddableClass</span> <span class="p">{</span>
+  <span class="nl">value</span><span class="p">:</span> <span class="kt">int</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">MyAddableClass</span> <span class="n">add</span><span class="p">(</span><span class="n">MyAddableClass</span> <span class="n">a</span><span class="p">,</span> <span class="n">MyAddableClass</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">MyAddableClass</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div><p>or something like that. But it would be really nice if function overloading was powerful enough to replace some other language constructs like classes.</p><p>And then I saw a video about the Julia programming language where they were talking about the fancy &quot;dynamic dispatch&quot; that enabled developers to easily re-use and extend existing libraries. This was awesome! I saw my idea being useful in another project.</p><p>So I spent the afternoon thinking about where to go from there, and this all ties into my idea of an OS/package manager/programming environment.</p><p>There are some key principals I'm thinking of:</p><h3>1. Data and methods are separate</h3><p>Data is defined to store information and methods operate on that data. Keeping data and methods also makes it easier to extend libraries because data and the methods operating on that data are decoupled. In the case of the Julia programming language, this makes it really easy to extend and modify existing libraries without subclassing or re-writing the source code.</p><h3>2. Data and methods should be freed of their source files.</h3><p>Text editors and files are a great way to develop, but they make it challenging to manipulate large numbers of objects and move programming projects around. Programming libraries and apps shouldn't be constrained to files - they should be free and queryable and fluid.</p><p>Imagine this: each data type and method has it's own definition. They exist in a module and can be written individually in a text editor, but they live independent of their source file. They can be compressed into a binary format. They can be compiled. They can be serialized to a single file. They can be statically analyzed. They can be traced to find dependencies between code elements.</p><div class="highlight"><pre><span></span>Search for a function:
+&gt; add
+
+Results:
+add(int, int)
+add(float, int)
+add(int, float)
+add(float, float)
+add(vec, vec)
+</pre></div><div class="highlight"><pre><span></span>Make a new data type
+name: RGB Color
+fields:
+  r: float
+  g: float
+  b: float
+
+Make associated functions
+init(RGB Color) {
+  color = makeBlank(RGB Color)
+  color.r = 0
+  color.g = 0
+  color.b = 0
+  return color
+}
+init(RGB Color, r: float, g: float, b: float) {
+  color = makeBlank(RGB Color)
+  color.r = r
+  color.g = g
+  color.b = b
+  return color
+}
+
+add(left: RGB Color, right: RGB Color) {
+  r = left.r + right.r
+  g = left.g + right.g
+  b = left.b + right.b
+  return init(RGB Color, r, g, b)
+}
+</pre></div></div></body></html>
