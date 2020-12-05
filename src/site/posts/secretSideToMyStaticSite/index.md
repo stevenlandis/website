@@ -151,7 +151,7 @@ To get the first link, the landing page:
 </html>
 ```
 
-If you want to give it a try, here's [the landing page](/secret/landing) and the password is `pass`.
+If you want to give it a try, here's [the landing page](/secret) and the password is `pass`.
 
 # Restrictions and Future Ideas
 

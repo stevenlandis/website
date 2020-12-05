@@ -9,4 +9,4 @@ I just graduated from UCSB! I like coding as a hobby and I made this site from s
 
 If you want to make fractals, check out my [fractal generator](fractal). It's a generalization of the dragon curve that leads to some pretty cool shapes.
 
-I also have a password-protected portion of my website. Use the [landing page](secret/landing) to access it or read more about it in [this post](posts/secretSideToMyStaticSite).
+I also have a password-protected portion of my website. Use the [landing page](secret) to access it or read more about it in [this post](posts/secretSideToMyStaticSite).

@@ -163,7 +163,7 @@ def verifyLinks():
     if isdir(path) and isfile(path + '/index.html'):
       continue
     if isfile(path): continue
-    if isfile(path + '.html'): continue
+    # if isfile(path + '.html'): continue
 
     print(f'Error: unable to resolve "{link}"')
     for refFile in allLinks[link]:
