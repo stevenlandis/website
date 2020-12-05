@@ -22,7 +22,7 @@ def main():
   buildWebapp()
   buildCookbook()
   verifyLinks()
-  bld.syncFiles('builtFiles')
+  # bld.syncFiles('builtFiles')
 
 def clean():
   bld.Dir('build').delete()
@@ -95,6 +95,7 @@ def buildPyPage(file, outFile, relPath):
     txt = file.read()
     tempGlobals = {'__file__': file.path}
     tempGlobals['buildDir'] = bld.Dir('build')
+    tempGlobals['relDir'] = outFile.parent()
     chdir(file.parent().abspath)
     exec(txt, tempGlobals)
     if 'build' not in tempGlobals:
@@ -114,12 +115,14 @@ def buildMdPage(file, outFile, relPath):
     outFile.write(page.getStr())
 
 def buildPostsList():
-  links = [
-    (file.title, f'/posts/{file.title}')
-    for file in bld.Dir('build/posts').files() if file.type == 'html']
+  links = []
+  for folder in bld.Dir('build/posts').dirs():
+    for file in folder.files():
+      if file.name == 'index.html':
+        links.append((folder.name, f'/posts/{folder.name}'))
   page = LinkListPage('Blog Posts', links)
   checkPage(page, '', 'post list')
-  bld.File('build/posts/list.html').write(page.getStr())
+  bld.File('build/posts/index.html').write(page.getStr())
 
 def buildSecretSite():
   bld.copy(bld.Dir('../encryptWebsite/out'), bld.Dir('build/secret'))

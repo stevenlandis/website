@@ -15,17 +15,19 @@ AES is a secure encryption algorithm where you encrypt data with a key. When you
 
 From a high level, I use sha256 to hash my password and AES to encrypt and decrypt the contents of my secret web pages. Here's the encryption process:
 
-![encryption process](./_pics/website-encryption.svg)
+![encryption process](website-encryption.svg)
 
 The decryption process is very similar, except I use the password hash to decrypt the encrypted website.
 
 Before encryption, my secret website looks like:
+
 ```
 main.html
 other.html
 ```
 
 When my website is encrypted, the file structure looks as follows:
+
 ```
 007a69b693fbc1f43f7ce8f4c9779621.html
 222e1238c95503abd14586130ee685c1.html
@@ -41,31 +43,36 @@ The html files with hex names correspond to `main.html` and `other.html`, and th
 My claim is that it is very hard to decode the webpages without the password.
 
 For example, this is what `007a69b693fbc1f43f7ce8f4c9779621.html` looks like:
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Encrypted Page</title>
-  <script type="text/javascript" src="aes.js"></script>
-</head>
-<body>
-  <script type="text/javascript">
-    const page = '42df955a2a180ffdc2da342c5ab550524ba3a28cbb99cf1f1f13d57e338b8e480d7ad11a716239cad703a54a06a78ffcbccda81f69f1732f365fdc7cc6eed9fc8bd8d2535a4e7b78956a8dd6239e052e29fa96564c69218c0212cf4ad5dcb7d3727e1bf18dc93b10bf7e9408ee8c1206761540d25320294f0ae0a05ce5dee27b56b3c703dded0be07528c3f6013792fc34005e6bcd6c5d19220cb30ca83764aa13f16c056e711ade30ee55dab8dae42a172ebcbc3a9cec3f9ee30934264c8c20a5208ae1157567672d103ab7ddd6ef236c6a65959a7b6f91ca4814a51fdcace10d95b26b62c19c7c3afa70e2b1b05435c9cbe5e72c25b05e7a136fb1d075b7df447819244237b0c23c6ae79b39da3c5c0654b7a95a82d1be6f81a9c2cd5531fc';
-    window.onload = () => {
-      const url = window.location.href;
-      const hexKey = window.localStorage.getItem('password hash');
-      console.assert(hexKey !== null);
-      console.assert(hexKey.length == 32);
-      const byteKey = aesjs.utils.hex.toBytes(hexKey);
-      const aes = new aesjs.ModeOfOperation.ctr(byteKey, new aesjs.Counter(1));
-      const pageBytes = aesjs.utils.hex.toBytes(page);
-      const decryptedBytes = aes.decrypt(pageBytes);
-      const decryptedPage = aesjs.utils.utf8.fromBytes(decryptedBytes);
-      document.body.innerHTML = decryptedPage;
-    }
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encrypted Page</title>
+    <script type="text/javascript" src="aes.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const page =
+        "42df955a2a180ffdc2da342c5ab550524ba3a28cbb99cf1f1f13d57e338b8e480d7ad11a716239cad703a54a06a78ffcbccda81f69f1732f365fdc7cc6eed9fc8bd8d2535a4e7b78956a8dd6239e052e29fa96564c69218c0212cf4ad5dcb7d3727e1bf18dc93b10bf7e9408ee8c1206761540d25320294f0ae0a05ce5dee27b56b3c703dded0be07528c3f6013792fc34005e6bcd6c5d19220cb30ca83764aa13f16c056e711ade30ee55dab8dae42a172ebcbc3a9cec3f9ee30934264c8c20a5208ae1157567672d103ab7ddd6ef236c6a65959a7b6f91ca4814a51fdcace10d95b26b62c19c7c3afa70e2b1b05435c9cbe5e72c25b05e7a136fb1d075b7df447819244237b0c23c6ae79b39da3c5c0654b7a95a82d1be6f81a9c2cd5531fc";
+      window.onload = () => {
+        const url = window.location.href;
+        const hexKey = window.localStorage.getItem("password hash");
+        console.assert(hexKey !== null);
+        console.assert(hexKey.length == 32);
+        const byteKey = aesjs.utils.hex.toBytes(hexKey);
+        const aes = new aesjs.ModeOfOperation.ctr(
+          byteKey,
+          new aesjs.Counter(1)
+        );
+        const pageBytes = aesjs.utils.hex.toBytes(page);
+        const decryptedBytes = aes.decrypt(pageBytes);
+        const decryptedPage = aesjs.utils.utf8.fromBytes(decryptedBytes);
+        document.body.innerHTML = decryptedPage;
+      };
+    </script>
+  </body>
 </html>
 ```
 
@@ -91,6 +98,7 @@ When the page loads, it uses the hashed+salted password stored in `window.localS
 `landing.html` is very similar except it only stores the encrypted url of the first secret page.
 
 To get the first link, the landing page:
+
 1. gets the first 128 bits of the sha256 of the password and a random salt.
 2. uses those bits as an AES key to decrypt the link.
 3. stores the hashed+salted password in `window.localStorage`
@@ -98,45 +106,48 @@ To get the first link, the landing page:
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Encrypted Page</title>
-  <script type="text/javascript" src="aes.js"></script>
-  <script type="text/javascript" src="sha256.js"></script>
-</head>
-<body>
-  <script type="text/javascript">
-    const link = '7f8dbd40a7dac976d04169bafa678c2b';
-    const salt = '0e12d61a450492ec3600cc70fddb051e';
-    function login() {
-      const pass = document.getElementsByTagName('input')[0].value;
-      const m = sha256.create();
-      m.update(pass);
-      m.update(salt);
-      const hexPass = m.hex().substr(0,32);
-      window.localStorage.setItem('password hash', hexPass);
-      const byteKey = aesjs.utils.hex.toBytes(hexPass);
-      const aes = new aesjs.ModeOfOperation.ctr(byteKey, new aesjs.Counter(1));
-      const linkBytes = aesjs.utils.hex.toBytes(link);
-      const decryptedLink = aesjs.utils.hex.fromBytes(aes.decrypt(linkBytes));
-      const url = `${decryptedLink}.html`;
-      window.location.href = url;
-    }
-    window.onload = () => {
-      const input = document.getElementsByTagName('input')[0];
-      input.addEventListener('keydown', event => {
-        if (event.key === 'Enter') {
-          login();
-        }
-      });
-    }
-  </script>
-  <h3>Password:</h3>
-  <input type="password">
-  <div>
-    <button onclick="login()">Click to login</button>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encrypted Page</title>
+    <script type="text/javascript" src="aes.js"></script>
+    <script type="text/javascript" src="sha256.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const link = "7f8dbd40a7dac976d04169bafa678c2b";
+      const salt = "0e12d61a450492ec3600cc70fddb051e";
+      function login() {
+        const pass = document.getElementsByTagName("input")[0].value;
+        const m = sha256.create();
+        m.update(pass);
+        m.update(salt);
+        const hexPass = m.hex().substr(0, 32);
+        window.localStorage.setItem("password hash", hexPass);
+        const byteKey = aesjs.utils.hex.toBytes(hexPass);
+        const aes = new aesjs.ModeOfOperation.ctr(
+          byteKey,
+          new aesjs.Counter(1)
+        );
+        const linkBytes = aesjs.utils.hex.toBytes(link);
+        const decryptedLink = aesjs.utils.hex.fromBytes(aes.decrypt(linkBytes));
+        const url = `${decryptedLink}.html`;
+        window.location.href = url;
+      }
+      window.onload = () => {
+        const input = document.getElementsByTagName("input")[0];
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            login();
+          }
+        });
+      };
+    </script>
+    <h3>Password:</h3>
+    <input type="password" />
+    <div>
+      <button onclick="login()">Click to login</button>
+    </div>
+  </body>
 </html>
 ```
 

@@ -6,14 +6,14 @@ def build():
   content = [
     Elem('p', {}, [
       'Read more about the ',
-      Elem('a', {'href': 'dragonCurve'}, 'dragon curve'),
+      Elem('a', {'href': '../dragonCurve'}, 'dragon curve'),
       ' the fractal that started it all.'])
   ]
 
   for file in buildDir.getDir('fractalPics').files():
     content.append(Elem('h2', file.title))
     content.append(Elem('img', {
-      'src': f'../fractalPics/{file.name}'
+      'src': f'../../fractalPics/{file.name}'
     }))
 
   return DefaultPage('Fractals', content)

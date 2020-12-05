@@ -293,7 +293,7 @@ function render() {
 
     // use web worker to do fractal calculation
     if (worker !== undefined) worker.terminate();
-    worker = new Worker('fractal_resources/fractalWorker.js');
+    worker = new Worker('fractalWorker.js');
     ctx.beginPath();
     ctx.rect(0,0,processedData.width, processedData.height);
     ctx.fillStyle = backgroundColors[data.backgroundColor];

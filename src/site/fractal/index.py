@@ -12,18 +12,18 @@ def build():
         '<style type="text/css" media="print">@page {size: auto;margin: 0;}</style>',
         Script('/js/pr.js'),
         Script('/js/Elem.js'),
-        Script('fractal_resources/color.js'),
-        Script('fractal_resources/fractal.js'),
-        Script('fractal_resources/page.js'),
+        Script('color.js'),
+        Script('fractal.js'),
+        Script('page.js'),
     ]
 
     content = ['loading javascript']
 
     # copy the webworker
     bld.copy(
-        bld.File('fractal_resources/fractalWorker.js'),
-        buildDir.getFile('fractal_resources/fractalWorker.js'))
+        bld.File('fractalWorker.js'),
+        relDir.getFile('fractalWorker.js'))
     # print(bld.File('fractal_resources/fractalWorker.js'))
-    # print(buildDir.abspath)
+    # print(relDir.abspath)
 
     return WebPage(head, content)

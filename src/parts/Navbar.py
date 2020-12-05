@@ -5,7 +5,7 @@ def Navbar(links=None):
         links = [
             ('Home', '/'),
             ('Resume', '/resume'),
-            ('Posts', '/posts/list'),
+            ('Posts', '/posts'),
             ('Fractal Generator', '/fractal'),
             ('Webapp', '/webapp'),
             ("Picken's Family Cookbook", '/cookbook')

@@ -2,9 +2,9 @@
 title: Dragon Curve
 ---
 
-![dragon curve](../fractalPics/dragon.jpg)
+![dragon curve](../../fractalPics/dragon.jpg)
 
-See a list of all my fractals [here](fractals)
+See a list of all my fractals [here](../fractals)
 
 I first heard about the dragon curve in 8th grade math class. The assignment was to research a cool math concept and I stumbled upon the dragon curve. I was immediately engrossed by its strange complexity and wanted to learn more about how it worked.
 
@@ -139,7 +139,7 @@ As I was now making my own images, I decided to experiment with color by cycling
 
 ## Results
 
-You can see a [list of fractal pictures](fractals.html) here. I kept the colors simple with a black background and line colors that cycle through primary colors. This color cycling lets you see how the path is drawn.
+You can see a [list of fractal pictures](../fractals) here. I kept the colors simple with a black background and line colors that cycle through primary colors. This color cycling lets you see how the path is drawn.
 
 # Future Work
 

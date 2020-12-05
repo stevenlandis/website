@@ -2,7 +2,7 @@
 title: Rule Inputs
 ---
 
-This post discusses how to find dependencies for [bld](bld.html), a project builder I made.
+This post discusses how to find dependencies for [bld](../bld), a project builder I made.
 
 Rules have inputs (dependencies) and outputs (results). For bld, these inputs and outputs are files, but they could be many other things such as variables. Bld only lets users declare inputs and outputs before running a rule but there is another way.
 
@@ -49,19 +49,18 @@ Consider the following code snippet:
 
 var a = false;
 var b = false;
-print('set a and b');
+print("set a and b");
 
 wait(a && b, () => {
-    print('a and b are both true!');
+  print("a and b are both true!");
 });
-print('set up wait function');
+print("set up wait function");
 
 a = true;
-print('set a to true');
+print("set a to true");
 
 b = true;
-print('set b to true');
-
+print("set b to true");
 
 /*
 OUTPUT
@@ -81,19 +80,23 @@ This isn't achievable with normal javascript, but a few small changes would make
 
 var a = Var(false);
 var b = Var(false);
-print('set a and b');
+print("set a and b");
 
-wait(() => {a.get() && b.get()}, () => {
-    print('a and b are both true!');
-});
-print('set up wait function');
+wait(
+  () => {
+    a.get() && b.get();
+  },
+  () => {
+    print("a and b are both true!");
+  }
+);
+print("set up wait function");
 
 a.set(true);
-print('set a to true');
+print("set a to true");
 
 b.set(true);
-print('set b to true');
-
+print("set b to true");
 
 /*
 OUTPUT
@@ -112,20 +115,24 @@ This optimization is very efficient because it only checks the condition when on
 In addition, `a` or `b` could be a computed variable:
 
 ```js
-
 var a1 = Var(false);
 var a2 = Var(false);
 
 var a = FcnVar(() => a1.get() || a2.get());
 var b = Var(true);
 
-wait(() => {a.get() && b.get()}, () => {
-    print('a and b are both true!');
-});
-print('set up wait function');
+wait(
+  () => {
+    a.get() && b.get();
+  },
+  () => {
+    print("a and b are both true!");
+  }
+);
+print("set up wait function");
 
 a1.set(true);
-print('set a1 to true');
+print("set a1 to true");
 
 /*
 OUTPUT
@@ -152,12 +159,12 @@ var b = Ref(true);
 
 run(() => {
   if (a.get() && b.get()) {
-    print('a and b are both true!');
+    print("a and b are both true!");
   }
 });
-print('set up run function');
+print("set up run function");
 
-print('setting a1 to true');
+print("setting a1 to true");
 a1.set(true);
 
 /*

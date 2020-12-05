@@ -49,7 +49,7 @@ def build():
         Favicon(16, 16),
         Favicon(32, 32),
         Favicon(96, 96),
-        StyleSheet('resume_resources/resumeStyles.css'),
+        StyleSheet('resumeStyles.css'),
         '<style type="text/css" media="print">@page {size: auto;margin: 0;}</style>'
     ]
 
