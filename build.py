@@ -19,6 +19,8 @@ def main():
   buildSite()
   buildPostsList()
   buildSecretSite()
+  buildWebapp()
+  buildCookbook()
   verifyLinks()
   bld.syncFiles('builtFiles')
 
@@ -131,6 +133,18 @@ def buildFractalPics():
     if bld.needsUpdate(file, outFile):
       cmd = f'magick convert "{file.path}" "{outFile.path}"'
       bld.call(cmd)
+
+def buildWebapp():
+  sourceDir = bld.Dir('../js-app-framework/dist')
+  outDir = bld.Dir('build/webapp');
+  outDir.make()
+  bld.copy(sourceDir, outDir)
+
+def buildCookbook():
+  sourceDir = bld.Dir('../Pickens_Cookbook/html')
+  outDir = bld.Dir('build/cookbook')
+  outDir.make()
+  bld.copy(sourceDir, outDir)
 
 def verifyLinks():
   for link in allLinks:
