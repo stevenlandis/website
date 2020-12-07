@@ -1,0 +1,131 @@
+.page {
+	font-family: "EB Garamond", serif;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+.header {
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+.title {
+	text-transform: uppercase;
+	color: #000;
+}
+
+.bodyheader {
+	text-transform: uppercase;
+}
+
+.menu {
+	text-transform: uppercase;
+	border-bottom: 1px solid;
+	border-color: #777;
+}
+
+.menu_item {
+	display: inline;
+	padding-left: 8px;
+	padding-right: 9px;
+}
+
+.bodyheader {
+	max-width: 600px;
+}
+
+.body {
+	max-width: 600px;
+}
+
+button {
+	font-family: inherit;
+  background: none;
+  border: 1px solid #777;
+  padding: 0px 5px 0px 5px;
+  font-size: inherit;
+  color: #777;
+}
+
+button:hover {
+	color: #000;
+}
+
+input {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+.print-btn {
+	margin-top: 8px;
+}
+
+.navigation {
+	display: inline-block;
+	vertical-align: top;
+	min-width: 100px;
+	max-width: 150px;
+}
+
+.navigation-title {
+	color: #000;
+}
+
+.body-navigation-container {
+
+}
+
+.body-header-container {
+	display: inline-block;
+	margin-left: 20px;
+	border-left: 1px solid;
+	padding-left: 20px;
+	border-color: #777;
+}
+
+.normal-body-header-container {
+}
+
+.navigation-item {
+	margin-left: 15px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.navigation-title {
+	margin-bottom: 10px;
+}
+
+.body-indent {
+	margin-left: 50px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.clipart {
+	text-align: center;
+}
+
+.search {
+
+}
+
+a {
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+a:link, a:visited {
+	color: #777;
+}
+
+a:hover, a:active {
+	color: #000;
+	background-color: #bfbfbf;
+}
+
+body {
+	font-family: "EB Garamond", serif;
+}
