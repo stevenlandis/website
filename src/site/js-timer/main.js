@@ -1,6 +1,6 @@
 async function clickTextArea() {
   const speculateTime = 500;
-  const sampleTime = 1000000;
+  const sampleTime = 10000;
 
   const setup = document.getElementById('setup').value;
   const code = document.getElementById('text-area').value;
